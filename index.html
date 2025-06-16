@@ -479,6 +479,7 @@
             border-left: 4px solid #0284c7;
             margin-bottom: 1rem;
         }
+
         /* Severity Score Styles */
         .severity-indicator {
             margin-top: 1rem;
@@ -509,6 +510,36 @@
             border-radius: 0.25rem;
             transition: width 0.5s ease;
             background: linear-gradient(to right, #22c55e, #FFC300, #dc3545);
+        }
+
+        /* Medication Box Styles */
+        .medications-box {
+            background-color: #fef3c7;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid #f59e0b;
+            margin-bottom: 1rem;
+        }
+
+        .medications-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Forms and Safety Lists */
+        .forms-list, .safety-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .forms-item, .safety-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
         }
 
         /* GOS18 Form Styles */
@@ -552,10 +583,22 @@
             color: #0A3D62;
         }
 
+        @media (min-width: 768px) {
+            .gos18-title {
+                font-size: 1.5rem;
+            }
+        }
+
         .gos18-subtitle {
             font-size: 0.75rem;
             color: #6b7280;
             margin-top: 0.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .gos18-subtitle {
+                font-size: 0.875rem;
+            }
         }
 
         .gos18-close {
@@ -579,11 +622,19 @@
             font-family: 'Arial', sans-serif;
         }
 
+        @media (min-width: 768px) {
+            .gos18-form {
+                font-size: 0.875rem;
+            }
+        }
+
         .gos18-form table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 1rem;
             background: white;
+            display: block;
+            overflow-x: auto;
         }
 
         .gos18-form th,
@@ -593,6 +644,13 @@
             text-align: left;
             vertical-align: middle;
             min-width: 60px;
+        }
+
+        @media (min-width: 768px) {
+            .gos18-form th,
+            .gos18-form td {
+                padding: 0.5rem;
+            }
         }
 
         .gos18-form th {
@@ -615,9 +673,26 @@
             background: white;
         }
 
+        @media (min-width: 768px) {
+            .gos18-form input[type="text"],
+            .gos18-form input[type="date"],
+            .gos18-form input[type="tel"],
+            .gos18-form input[type="email"],
+            .gos18-form input[type="time"],
+            .gos18-form textarea {
+                font-size: 0.875rem;
+            }
+        }
+
         .gos18-form textarea {
             resize: vertical;
             min-height: 60px;
+        }
+
+        @media (min-width: 768px) {
+            .gos18-form textarea {
+                min-height: 80px;
+            }
         }
 
         .gos18-form input[type="checkbox"] {
@@ -627,8 +702,22 @@
             vertical-align: middle;
         }
 
+        @media (min-width: 768px) {
+            .gos18-form input[type="checkbox"] {
+                margin-right: 0.5rem;
+                width: 16px;
+                height: 16px;
+            }
+        }
+
         .gos18-section {
             margin-bottom: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .gos18-section {
+                margin-bottom: 1.5rem;
+            }
         }
 
         .gos18-section-title {
@@ -639,6 +728,36 @@
             border: 1px solid #333;
             text-align: center;
             font-size: 0.875rem;
+        }
+
+        @media (min-width: 768px) {
+            .gos18-section-title {
+                padding: 0.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        .gos18-responsive-table {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 1rem;
+        }
+
+        .gos18-form .prescription-table {
+            min-width: 600px;
+        }
+
+        @media (max-width: 767px) {
+            .gos18-form td[colspan="6"] {
+                display: block;
+                width: 100%;
+            }
+            
+            .gos18-form td[rowspan] {
+                display: block;
+                width: 100%;
+                border-bottom: none;
+            }
         }
 
         .gos18-checkbox-group {
@@ -653,6 +772,12 @@
             align-items: center;
             min-width: 150px;
             margin-bottom: 0.25rem;
+        }
+
+        @media (max-width: 767px) {
+            .gos18-checkbox-item {
+                min-width: 100%;
+            }
         }
 
         .gos18-actions {
@@ -682,24 +807,14 @@
             background-color: #2563eb;
         }
 
-        .gos18-copy {
+        .gos18-email {
             background-color: #10b981;
             color: white;
             border: none;
         }
 
-        .gos18-copy:hover {
-            background-color: #059669;
-        }
-
-        .gos18-email {
-            background-color: #8b5cf6;
-            color: white;
-            border: none;
-        }
-
         .gos18-email:hover {
-            background-color: #7c3aed;
+            background-color: #059669;
         }
 
         .gos18-toggle {
@@ -719,49 +834,6 @@
             background-color: #4f46e5;
         }
 
-        /* Medication Box */
-        .medications-box {
-            background-color: #fef3c7;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            border-left: 4px solid #f59e0b;
-            margin-bottom: 1rem;
-        }
-
-        .medications-title {
-            font-weight: 600;
-            color: #92400e;
-            margin-bottom: 0.5rem;
-        }
-
-        .safety-list {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .safety-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            color: #374151;
-            margin-bottom: 0.5rem;
-        }
-
-        .forms-list {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .forms-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            color: #374151;
-            margin-bottom: 0.5rem;
-        }
-
         @media print {
             .gos18-close,
             .gos18-actions,
@@ -774,6 +846,7 @@
     </style>
     <!-- Add jsPDF library for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <!-- Welcome Screen -->
@@ -974,7 +1047,7 @@
                         </ul>
                     </div>
                     <div class="medications-box" id="medications-box">
-                        <h4 class="medications-title">Medication Protocol</h4>
+                        <h4 class="medications-title">Medications</h4>
                         <ul class="management-list" id="medications-list">
                             <!-- Medications will be populated by JavaScript -->
                         </ul>
@@ -1004,11 +1077,6 @@
                     <ul class="safety-list" id="safety-list">
                         <!-- Safety netting advice will be populated by JavaScript -->
                     </ul>
-                </div>
-
-                <div class="action-buttons">
-                    <button class="secondary-button" onclick="startOver()">New Assessment</button>
-                    <button class="primary-button" onclick="window.print()">Generate Referral Letter</button>
                 </div>
             </div>
 
@@ -1061,6 +1129,11 @@
                             </tr>
                             <tr>
                                 <td colspan="6">
+                                    <strong>Other:</strong> <input type="text" name="other" style="width: 90%;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
                                     <strong>Post Code:</strong> <input type="text" name="postcode" style="width: 200px;">
                                 </td>
                             </tr>
@@ -1092,10 +1165,93 @@
                         </table>
                     </div>
 
-                    <!-- Clinical Findings Section -->
+                    <!-- Latest Spectacle Prescription Section -->
                     <div class="gos18-section">
-                        <div class="gos18-section-title">Provisional Diagnosis</div>
+                        <div class="gos18-section-title">Latest Spectacle Prescription</div>
+                        <div class="gos18-responsive-table">
+                            <table class="prescription-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rx</th>
+                                        <th>Vision</th>
+                                        <th>Sph</th>
+                                        <th>Cyl</th>
+                                        <th>Axis</th>
+                                        <th>VA</th>
+                                        <th>Dist. Prism PH Acuity</th>
+                                        <th>Add</th>
+                                        <th>Nr. Prism</th>
+                                        <th>Near VA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>RE</td>
+                                        <td><input type="text" name="reVision"></td>
+                                        <td><input type="text" name="reSph"></td>
+                                        <td><input type="text" name="reCyl"></td>
+                                        <td><input type="text" name="reAxis"></td>
+                                        <td><input type="text" name="reVA"></td>
+                                        <td><input type="text" name="reDistPrism"></td>
+                                        <td><input type="text" name="reAdd"></td>
+                                        <td><input type="text" name="reNrPrism"></td>
+                                        <td><input type="text" name="reNearVA"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>LE</td>
+                                        <td><input type="text" name="leVision"></td>
+                                        <td><input type="text" name="leSph"></td>
+                                        <td><input type="text" name="leCyl"></td>
+                                        <td><input type="text" name="leAxis"></td>
+                                        <td><input type="text" name="leVA"></td>
+                                        <td><input type="text" name="leDistPrism"></td>
+                                        <td><input type="text" name="leAdd"></td>
+                                        <td><input type="text" name="leNrPrism"></td>
+                                        <td><input type="text" name="leNearVA"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Mydriasis and IOP Section -->
+                    <div class="gos18-section">
                         <table>
+                            <tr>
+                                <td colspan="3" style="text-align: center;"><strong>Mydriasis</strong></td>
+                                <td colspan="3" style="text-align: center;"><strong>Intraocular Pressure (IOP)</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Eye</td>
+                                <td>%</td>
+                                <td>Drug</td>
+                                <td>RE</td>
+                                <td>Time: <input type="time" name="iopTime"></td>
+                                <td>Contact <input type="checkbox" name="iopContact"> Non Contact <input type="checkbox" name="iopNonContact"></td>
+                            </tr>
+                            <tr>
+                                <td>RE LE</td>
+                                <td><input type="text" name="mydriasisPercent"></td>
+                                <td><input type="text" name="mydriasisDrug"></td>
+                                <td>LE</td>
+                                <td><input type="text" name="leIOP"></td>
+                                <td><input type="text" name="iopMethod"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- IT Fields Section -->
+                    <div class="gos18-section">
+                        <div class="gos18-section-title">IT Fields / Provisional Diagnosis</div>
+                        <table>
+                            <tr>
+                                <td><strong>Imaging:</strong></td>
+                                <td colspan="5">
+                                    <input type="checkbox" name="imaging1"> Enclosed
+                                    <input type="checkbox" name="imaging2"> Emailed
+                                    <input type="checkbox" name="imaging3"> Sent with patient
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="6">
                                     <strong>Salient Symptoms, Signs, History, Clinical Findings, Reason for Referral and Provisional Diagnosis:</strong><br>
@@ -1129,6 +1285,81 @@
                                             <label for="referralRoutine">Routine - to HES within 12 weeks</label>
                                         </div>
                                     </div>
+                                    
+                                    <strong>Supervised by:</strong><br>
+                                    <div class="gos18-checkbox-group">
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedCataract"> 
+                                            <label>Cataract</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedGeneral"> 
+                                            <label>General (Medical/Ophthalmology)</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedDiabetic"> 
+                                            <label>Diabetic/Dis/Adv</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedLow"> 
+                                            <label>Low Vision</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedOther"> 
+                                            <label>Other Medical Retinal</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedGlaucoma"> 
+                                            <label>Glaucoma</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedSquint"> 
+                                            <label>Squint/Ocular Motility</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedYAG"> 
+                                            <label>YAG Laser</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedAdnexal"> 
+                                            <label>Paed: Adnexal/Orbits</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedExternal"> 
+                                            <label>External Eye/Adnexa</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedOrtho"> 
+                                            <label>Orthoptics</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedMacular"> 
+                                            <label>Macular/Intravitreal</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="supervisedPaed"> 
+                                            <label>Paed: General/Refrac</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="margin-top: 0.5rem;">
+                                        <strong>Not otherwise specified:</strong> 
+                                        <input type="text" name="notSpecified" style="width: 50%;">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <div class="gos18-checkbox-group" style="margin-top: 1rem;">
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="referralGP"> 
+                                            <label>GP (For Systemic management or appropriate)</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="referralNotification"> 
+                                            <label>Notification Only</label>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -1148,6 +1379,18 @@
                             </tr>
                         </table>
                     </div>
+
+                    <!-- Footer Note -->
+                    <div class="gos18-section">
+                        <p style="font-size: 0.75rem; text-align: center; color: #6b7280;">
+                            Please obtain consent from the patient if not already given, and provide feedback to the referring optometrist Referral Letter:<br>
+                            <input type="checkbox" name="patientCopy"> Patient Copy
+                            <input type="checkbox" name="postedToGP"> Posted to GP
+                            <input type="checkbox" name="handedToPatient"> Handed to Pt to take to GP/HES
+                            <input type="checkbox" name="faxedToHES"> Faxed to HES<br>
+                            GOS018 Unrelated Excel.xlsx
+                        </p>
+                    </div>
                 </form>
 
                 <div class="gos18-actions">
@@ -1159,13 +1402,6 @@
                         </svg>
                         Download PDF
                     </button>
-                    <button type="button" class="gos18-button gos18-copy" onclick="copyGOS18()">
-                        <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; margin-right: 0.5rem;">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        Copy Form
-                    </button>
                     <button type="button" class="gos18-button gos18-email" onclick="emailGOS18()">
                         <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; margin-right: 0.5rem;">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
@@ -1173,6 +1409,12 @@
                         </svg>
                         Email Form
                     </button>
+                </div>
+            </div>
+
+                <div class="action-buttons">
+                    <button class="secondary-button" onclick="startOver()">New Assessment</button>
+                    <button class="primary-button" onclick="window.print()">Generate Referral Letter</button>
                 </div>
             </div>
         </div>
@@ -1187,6 +1429,263 @@
         let assessmentPath = [];
         let recommendation = null;
         let questionHistory = [];
+
+        // Severity scoring system
+        const severityScoring = {
+            "Red Eye": {
+                "vision": { "Normal vision": 0, "Mild blur": 2, "Significant vision loss": 5 },
+                "pain": { "No pain": 0, "Mild discomfort": 1, "Severe pain with photophobia": 4 },
+                "discharge": { "No discharge": 0, "Watery discharge": 1, "Mucopurulent discharge": 2 }
+            },
+            "Flashes & Floaters": {
+                "onset": { "Within 24 hours": 5, "Within 1 week": 3, "Within 1 month": 2, "Over 1 month ago": 1 },
+                "field": { "Yes - progressive": 5, "Yes - stable": 3, "No": 0 },
+                "floaters": { "Yes - shower of floaters": 5, "Yes - few new floaters": 3, "No change": 1 }
+            },
+            "Sudden Vision Loss": {
+                "laterality": { "One eye": 3, "Both eyes": 4 },
+                "speed": { "Sudden (seconds)": 5, "Rapid (minutes)": 4, "Gradual (hours)": 2 },
+                "pain": { "No pain": 1, "Mild pain": 2, "Severe pain": 4, "Headache with jaw claudication": 5 }
+            },
+            "Raised IOP": {
+                "level": { "21-30 mmHg": 2, "31-40 mmHg": 4, ">40 mmHg": 5 },
+                "symptoms": { "No symptoms": 0, "Mild headache": 2, "Severe pain + nausea": 5 }
+            },
+            "Eyelid Problems": {
+                "type": { "Swelling": 3, "Malposition": 1, "Lump/lesion": 3, "Redness": 2 },
+                "systemic": { "None": 0, "Mild malaise": 2, "Fever": 4, "Very unwell": 5 }
+            },
+            "Watery Eyes": {
+                "laterality": { "One eye": 3, "Both eyes": 1 },
+                "triggers": { "Constant": 3, "Outdoors/wind": 1, "Reading": 2 }
+            },
+            "Pediatric Eye Problems": {
+                "age": { "0-6 months": 4, "6-12 months": 3, "1-3 years": 2, ">3 years": 1 },
+                "reflex": { "Normal": 0, "Absent/white": 5, "Not checked": 2 }
+            },
+            "Diplopia": {
+                "type": { "Resolves covering one eye": 3, "Persists with one eye": 1, "Variable": 2 },
+                "onset": { "Sudden": 5, "Gradual": 3, "Long-standing": 1 }
+            },
+            "Headaches with Visual Symptoms": {
+                "pattern": { "Zigzag lines": 1, "Vision loss": 3, "Double vision": 4 },
+                "fundus": { "Normal": 0, "Disc swelling": 5, "Not examined": 2 }
+            },
+            "Corneal Problems": {
+                "cause": { "Trauma": 3, "Contact lens related": 4, "No specific cause": 1 },
+                "staining": { "No staining": 0, "Punctate": 2, "Dendritic": 5, "Large defect": 4, "Not tested": 1 }
+            }
+        };
+
+        // Medication protocols
+        const medicationProtocols = {
+            "Red Eye": {
+                "emergency": {
+                    medications: ["No topical treatment before specialist review", "Oral analgesia if required"],
+                    notes: "Avoid topical steroids without specialist guidance"
+                },
+                "urgent": {
+                    medications: ["Cyclopentolate 1% BD (if anterior uveitis)", "Consider oral NSAIDs"],
+                    notes: "NO steroids without specialist review"
+                },
+                "routine": {
+                    medications: ["Chloramphenicol 1% QDS 7 days", "Preservative-free lubricants QDS"],
+                    notes: "Review if no improvement in 48-72 hours"
+                }
+            },
+            "Flashes & Floaters": {
+                "emergency": {
+                    medications: ["No specific medications", "Avoid aspirin pre-operatively"],
+                    notes: "Surgical management likely required"
+                },
+                "urgent": {
+                    medications: ["No routine medications needed"],
+                    notes: "Treatment depends on findings"
+                },
+                "routine": {
+                    medications: ["No medications required"],
+                    notes: "Reassurance and monitoring"
+                }
+            },
+            "Sudden Vision Loss": {
+                "emergency": {
+                    medications: [
+                        "Prednisolone 60-80mg PO STAT (if GCA)",
+                        "Aspirin 300mg PO STAT (if embolic)",
+                        "Consider IV methylpred if optic neuritis"
+                    ],
+                    notes: "Do NOT delay steroids for tests if GCA suspected"
+                },
+                "urgent": {
+                    medications: [
+                        "Aspirin 300mg then 75mg daily",
+                        "Statin if not contraindicated",
+                        "Antihypertensives as needed"
+                    ],
+                    notes: "Full vascular risk management"
+                },
+                "routine": {
+                    medications: [
+                        "Optimize existing medications",
+                        "Consider aspirin if vascular risk"
+                    ],
+                    notes: "Focus on risk factor modification"
+                }
+            },
+            "Raised IOP": {
+                "emergency": {
+                    medications: [
+                        "Acetazolamide 500mg PO STAT then 250mg QDS",
+                        "Timolol 0.5% STAT",
+                        "Brimonidine 0.2% STAT",
+                        "Pilocarpine 2% QDS"
+                    ],
+                    notes: "IV acetazolamide if vomiting"
+                },
+                "urgent": {
+                    medications: [
+                        "Timolol 0.5% BD",
+                        "Consider oral acetazolamide"
+                    ],
+                    notes: "Start treatment while awaiting review"
+                },
+                "routine": {
+                    medications: ["Consider topical therapy based on risk"],
+                    notes: "Treatment decision after full assessment"
+                }
+            },
+            "Corneal Problems": {
+                "emergency": {
+                    medications: ["Intensive fortified antibiotics as per protocol"],
+                    notes: "NO treatment until after corneal scrape"
+                },
+                "urgent": {
+                    medications: [
+                        "Aciclovir 3% ointment 5x daily (if HSV)",
+                        "Chloramphenicol 1% QDS (if bacterial)"
+                    ],
+                    notes: "Stop contact lens wear immediately"
+                },
+                "routine": {
+                    medications: ["Chloramphenicol 1% QDS 5-7 days"],
+                    notes: "Simple abrasions heal quickly"
+                }
+            }
+        };
+
+        // Safety netting configuration
+        const safetyNettingConfig = {
+            "Red Eye": {
+                "emergency": [
+                    "Return IMMEDIATELY if vision deteriorates",
+                    "Seek urgent care if pain increases dramatically",
+                    "Do not use any eye drops unless prescribed",
+                    "Keep emergency eye department contact details"
+                ],
+                "urgent": [
+                    "Return if symptoms worsen or no improvement in 24 hours",
+                    "Avoid driving if vision affected",
+                    "Use prescribed medications as directed",
+                    "Attend all follow-up appointments"
+                ],
+                "routine": [
+                    "Return if no improvement in 48-72 hours",
+                    "Complete full course of antibiotics",
+                    "Maintain good hygiene",
+                    "Avoid sharing towels/pillows"
+                ]
+            },
+            "Flashes & Floaters": {
+                "emergency": [
+                    "Return IMMEDIATELY if curtain/shadow develops in vision",
+                    "Seek urgent care if sudden shower of new floaters",
+                    "Call 999 if sudden complete vision loss",
+                    "Keep mobile phone charged and accessible"
+                ],
+                "urgent": [
+                    "Return urgently if visual field defect develops",
+                    "Monitor for increasing floaters or flashes",
+                    "Avoid heavy lifting/straining until reviewed",
+                    "Have someone available to drive if vision deteriorates"
+                ],
+                "routine": [
+                    "Annual dilated examination if high myope",
+                    "Return if symptoms change or worsen",
+                    "Maintain regular eye examinations",
+                    "Report any new visual symptoms promptly"
+                ]
+            },
+            "Sudden Vision Loss": {
+                "emergency": [
+                    "Take prescribed steroids EXACTLY as directed (if GCA)",
+                    "Do NOT stop steroids without medical advice",
+                    "Return IMMEDIATELY if vision worsens or other eye affected",
+                    "Keep emergency contact numbers readily available"
+                ],
+                "urgent": [
+                    "Monitor for vision changes in either eye",
+                    "Take aspirin as prescribed (if vascular cause)",
+                    "Attend all follow-up appointments",
+                    "Control vascular risk factors strictly"
+                ],
+                "routine": [
+                    "Regular monitoring of vision",
+                    "Optimize cardiovascular risk factors",
+                    "Report any new symptoms immediately",
+                    "Maintain prescribed medications"
+                ]
+            }
+        };
+
+        // Clinical notes templates for GOS18
+        const clinicalNotesTemplates = {
+            "Red Eye": {
+                "emergency": (responses) => 
+                    `URGENT: ${responses.laterality} red eye with ${responses.vision}. 
+                    ${responses.pain === 'Severe pain with photophobia' ? 'Severe photophobia present. ' : ''}
+                    ${responses.discharge}. Requires immediate assessment to exclude sight-threatening pathology.`,
+                
+                "urgent": (responses) => 
+                    `${responses.laterality} red eye, ${responses.pain}. Vision: ${responses.vision}. 
+                    ${responses.discharge}. Clinical features suggest inflammatory/infective cause requiring prompt treatment.`,
+                
+                "routine": (responses) => 
+                    `${responses.laterality} red eye, likely ${responses.discharge === 'Mucopurulent discharge' ? 'bacterial conjunctivitis' : 'viral/allergic'}. 
+                    Vision: ${responses.vision}. Conservative management initiated.`
+            },
+            "Flashes & Floaters": {
+                "emergency": (responses) => 
+                    `URGENT: ${responses.floaters === 'Yes - shower of floaters' ? 'Shower of new floaters' : 'Acute symptoms'} 
+                    with ${responses.field === 'Yes - progressive' ? 'PROGRESSIVE FIELD DEFECT - ?RD. ' : ''}
+                    Onset ${responses.onset}. Requires immediate dilated retinal examination to exclude retinal tear/detachment.`,
+                
+                "urgent": (responses) => 
+                    `Recent onset flashes and floaters, started ${responses.onset}. 
+                    No field defect currently. Requires dilated peripheral retinal examination within 48 hours 
+                    to exclude retinal tear. Patient counselled re RD symptoms.`,
+                
+                "routine": (responses) => 
+                    `Chronic floaters ${responses.onset}. No recent change. 
+                    Vision stable. No field defect. 
+                    Likely benign PVD but requires confirmation with dilated examination.`
+            },
+            "Sudden Vision Loss": {
+                "emergency": (responses) => 
+                    `EMERGENCY: Sudden ${responses.laterality} vision loss. 
+                    ${responses.pain === 'Headache with jaw claudication' ? 'GCA SYMPTOMS - STARTED HIGH-DOSE STEROIDS. ' : ''}
+                    Onset ${responses.speed}. Requires immediate assessment and treatment.`,
+                
+                "urgent": (responses) => 
+                    `Acute ${responses.laterality} visual disturbance. 
+                    Onset ${responses.speed}. ${responses.pain}. 
+                    Requires urgent assessment for cause.`,
+                
+                "routine": (responses) => 
+                    `${responses.speed} vision loss, ${responses.laterality}. 
+                    No acute features. 
+                    Requires ophthalmology assessment to determine cause and optimize management.`
+            }
+        };
 
         // Clinical data structure with questions and logic for each condition
         const clinicalData = {
@@ -1539,7 +2038,7 @@
                     {
                         id: "staining",
                         text: "Fluorescein staining pattern?",
-                        options: ["No staining", "Punctate", "Dendritic", "Large defect"],
+                        options: ["No staining", "Punctate", "Dendritic", "Large defect", "Not tested"],
                         clinicalNote: "Dendritic = HSV, needs antivirals"
                     }
                 ],
@@ -1557,6 +2056,191 @@
                 }
             }
         };
+
+        // Function to calculate severity score
+        function calculateSeverityScore(condition, responses) {
+            let totalScore = 0;
+            const scoring = severityScoring[condition];
+            
+            if (!scoring) return 0;
+            
+            Object.entries(responses).forEach(([questionId, answer]) => {
+                if (scoring[questionId] && scoring[questionId][answer] !== undefined) {
+                    totalScore += scoring[questionId][answer];
+                }
+            });
+            
+            return totalScore;
+        }
+
+        // Function to generate clinical notes for GOS18
+        function generateClinicalNotes(condition, urgency, responses) {
+            if (clinicalNotesTemplates[condition] && clinicalNotesTemplates[condition][urgency]) {
+                return clinicalNotesTemplates[condition][urgency](responses);
+            }
+            
+            // Fallback for conditions without templates
+            let notes = `${condition} - ${urgency} referral. `;
+            Object.entries(responses).forEach(([key, value]) => {
+                notes += `${key.replace(/_/g, ' ')}: ${value}. `;
+            });
+            return notes;
+        }
+
+        // Function to populate GOS18 form
+        function populateGOS18Form() {
+            if (!recommendation) return;
+            
+            // Set clinical findings
+            const clinicalFindingsTextarea = document.getElementById('gos18-clinical-findings');
+            const clinicalNotes = generateClinicalNotes(selectedCondition, recommendation.urgency, responses);
+            if (clinicalFindingsTextarea) {
+                clinicalFindingsTextarea.value = clinicalNotes;
+            }
+            
+            // Check appropriate urgency box
+            const urgencyCheckboxes = {
+                'emergency': document.getElementById('referralOcular'),
+                'urgent': document.getElementById('referralSemi'),
+                'routine': document.getElementById('referralRoutine')
+            };
+            
+            const urgencyCheckbox = urgencyCheckboxes[recommendation.urgency];
+            if (urgencyCheckbox) {
+                urgencyCheckbox.checked = true;
+            }
+            
+            // Set today's date
+            const referralDateInput = document.getElementById('referralDate');
+            if (referralDateInput) {
+                referralDateInput.value = new Date().toISOString().split('T')[0];
+            }
+            
+            // Set appropriate subspecialty based on condition
+            const subspecialtyMap = {
+                "Flashes & Floaters": "supervisedMacular",
+                "Sudden Vision Loss": "supervisedGeneral",
+                "Red Eye": "supervisedGeneral",
+                "Raised IOP": "supervisedGlaucoma",
+                "Eyelid Problems": "supervisedAdnexal",
+                "Watery Eyes": "supervisedAdnexal",
+                "Pediatric Eye Problems": "supervisedPaed",
+                "Diplopia": "supervisedSquint",
+                "Headaches with Visual Symptoms": "supervisedGeneral",
+                "Corneal Problems": "supervisedExternal"
+            };
+            
+            const subspecialtyCheckbox = document.getElementsByName(subspecialtyMap[selectedCondition])[0];
+            if (subspecialtyCheckbox) {
+                subspecialtyCheckbox.checked = true;
+            }
+        }
+
+        // Function to toggle GOS18 form
+        function toggleGOS18Form() {
+            const container = document.getElementById('gos18-form-container');
+            container.classList.toggle('hidden');
+            
+            // Populate the form when opened
+            if (!container.classList.contains('hidden')) {
+                populateGOS18Form();
+            }
+        }
+
+        // Function to hide GOS18 form
+        function hideGOS18Form() {
+            const container = document.getElementById('gos18-form-container');
+            container.classList.add('hidden');
+        }
+
+        // Function to download GOS18 as PDF
+        async function downloadGOS18() {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+            
+            // Get form data
+            const formData = new FormData(document.getElementById('gos18-form'));
+            
+            // Add title
+            pdf.setFontSize(16);
+            pdf.text('GOS 18 - Referral/Notification', 20, 20);
+            
+            // Add assessment summary
+            pdf.setFontSize(12);
+            pdf.text(`Condition: ${selectedCondition}`, 20, 35);
+            pdf.text(`Urgency: ${recommendation.urgency.toUpperCase()}`, 20, 45);
+            pdf.text(`Severity Score: ${recommendation.severityScore || 'N/A'}`, 20, 55);
+            
+            // Add form content
+            let yPosition = 70;
+            const lineHeight = 10;
+            
+            pdf.setFontSize(10);
+            
+            // Iterate through form data
+            for (let [key, value] of formData.entries()) {
+                if (value && value !== '') {
+                    // Format the key nicely
+                    const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                    
+                    // Handle long text
+                    if (value.length > 60) {
+                        const lines = pdf.splitTextToSize(`${formattedKey}: ${value}`, 170);
+                        lines.forEach(line => {
+                            if (yPosition > 280) {
+                                pdf.addPage();
+                                yPosition = 20;
+                            }
+                            pdf.text(line, 20, yPosition);
+                            yPosition += lineHeight;
+                        });
+                    } else {
+                        pdf.text(`${formattedKey}: ${value}`, 20, yPosition);
+                        yPosition += lineHeight;
+                    }
+                    
+                    if (yPosition > 280) {
+                        pdf.addPage();
+                        yPosition = 20;
+                    }
+                }
+            }
+            
+            // Save the PDF
+            pdf.save(`GOS18_${selectedCondition.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`);
+        }
+
+        // Function to email GOS18 form
+        function emailGOS18() {
+            const formData = new FormData(document.getElementById('gos18-form'));
+            let emailBody = 'GOS 18 - Referral/Notification\n\n';
+            emailBody += `Condition: ${selectedCondition}\n`;
+            emailBody += `Urgency: ${recommendation.urgency.toUpperCase()}\n`;
+            emailBody += `Severity Score: ${recommendation.severityScore || 'N/A'}\n\n`;
+            
+            // Add assessment summary
+            emailBody += 'ASSESSMENT SUMMARY:\n';
+            assessmentPath.forEach(step => {
+                emailBody += `${step.question}: ${step.answer}\n`;
+            });
+            emailBody += '\n';
+            
+            // Add form data
+            emailBody += 'REFERRAL DETAILS:\n';
+            for (let [key, value] of formData.entries()) {
+                if (value && value !== '') {
+                    const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                    emailBody += `${formattedKey}: ${value}\n`;
+                }
+            }
+            
+            // Create mailto link
+            const subject = `GOS18 Referral - ${selectedCondition} - ${recommendation.urgency.toUpperCase()}`;
+            const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+        }
 
         // Function to display conditions
         function displayConditions() {
@@ -1651,6 +2335,15 @@
             // Display question
             document.getElementById('question-title').textContent = question.text;
             
+            // Display subtitle if present
+            const subtitleElement = document.getElementById('question-subtitle');
+            if (question.subtitle) {
+                subtitleElement.textContent = question.subtitle;
+                subtitleElement.classList.remove('hidden');
+            } else {
+                subtitleElement.classList.add('hidden');
+            }
+            
             // Display options
             const optionsContainer = document.getElementById('question-options');
             optionsContainer.innerHTML = '';
@@ -1721,6 +2414,9 @@
             let urgency = 'routine';
             let matchedRecommendation = null;
             
+            // Calculate severity score
+            const severityScore = calculateSeverityScore(selectedCondition, responses);
+            
             // Check for emergency criteria first
             if (condition.recommendations.emergency) {
                 const emergency = condition.recommendations.emergency;
@@ -1756,7 +2452,8 @@
                 urgency: urgency,
                 condition: matchedRecommendation.condition,
                 management: matchedRecommendation.management,
-                reasoning: `Based on clinical assessment: ${matchedRecommendation.condition}`
+                reasoning: `Based on clinical assessment: ${matchedRecommendation.condition}`,
+                severityScore: severityScore
             };
             
             displayResults();
@@ -1799,6 +2496,14 @@
                 `${recommendation.urgency.charAt(0).toUpperCase() + recommendation.urgency.slice(1)} Referral`;
             document.getElementById('recommendation-subtitle').textContent = recommendation.condition;
             document.getElementById('reasoning-text').textContent = recommendation.reasoning;
+            
+            // Set severity score
+            const severityScore = recommendation.severityScore || 0;
+            document.getElementById('severity-score').textContent = `Clinical Severity Score: ${severityScore}`;
+            
+            // Calculate percentage (assuming max score of 20)
+            const severityPercentage = Math.min((severityScore / 20) * 100, 100);
+            document.getElementById('severity-fill').style.width = `${severityPercentage}%`;
             
             // Set MECS eligibility
             const mecsDiv = document.getElementById('mecs-eligibility');
@@ -1848,6 +2553,94 @@
                     ${step}
                 `;
                 managementList.appendChild(li);
+            });
+            
+            // Set medications
+            const medicationsList = document.getElementById('medications-list');
+            const medicationsBox = document.getElementById('medications-box');
+            medicationsList.innerHTML = '';
+            
+            const protocolMedications = medicationProtocols[selectedCondition]?.[recommendation.urgency];
+            if (protocolMedications && protocolMedications.medications.length > 0) {
+                medicationsBox.style.display = 'block';
+                
+                protocolMedications.medications.forEach(med => {
+                    const li = document.createElement('li');
+                    li.className = 'management-item';
+                    li.innerHTML = `
+                        <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px; flex-shrink: 0;">
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        ${med}
+                    `;
+                    medicationsList.appendChild(li);
+                });
+                
+                // Add notes if present
+                if (protocolMedications.notes) {
+                    const noteItem = document.createElement('li');
+                    noteItem.className = 'management-item';
+                    noteItem.style.fontStyle = 'italic';
+                    noteItem.style.marginTop = '0.5rem';
+                    noteItem.innerHTML = `
+                        <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px; flex-shrink: 0;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        ${protocolMedications.notes}
+                    `;
+                    medicationsList.appendChild(noteItem);
+                }
+            } else {
+                medicationsBox.style.display = 'none';
+            }
+            
+            // Set documentation requirements
+            const formsList = document.getElementById('forms-list');
+            formsList.innerHTML = '';
+            
+            const forms = [
+                "GOS18 referral form",
+                "Clinical findings documentation",
+                "Visual acuity recording",
+                "Patient information leaflet"
+            ];
+            
+            forms.forEach(form => {
+                const li = document.createElement('li');
+                li.className = 'forms-item';
+                li.innerHTML = `
+                    <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px; flex-shrink: 0;">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    ${form}
+                `;
+                formsList.appendChild(li);
+            });
+            
+            // Set safety-netting advice
+            const safetyList = document.getElementById('safety-list');
+            safetyList.innerHTML = '';
+            
+            const safetyAdvice = safetyNettingConfig[selectedCondition]?.[recommendation.urgency] || [
+                "Return immediately if symptoms worsen",
+                "Seek urgent care if new symptoms develop",
+                "Attend all follow-up appointments",
+                "Contact emergency services if concerned"
+            ];
+            
+            safetyAdvice.forEach(advice => {
+                const li = document.createElement('li');
+                li.className = 'safety-item';
+                li.innerHTML = `
+                    <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px; flex-shrink: 0;">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    ${advice}
+                `;
+                safetyList.appendChild(li);
             });
             
             window.scrollTo(0, 0);
