@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EyeSpecialist.ai - Advanced Clinical Decision Support for Optometry</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FAFAFA;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #0A3D62;
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .header-content {
+            max-width: 64rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .header-subtitle {
+            color: #bfdbfe;
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+        .main-content {
+            max-width: 64rem;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #1C1C1C;
+        }
+
+        .welcome-description {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .disclaimer {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+            padding: 0.75rem;
+            background-color: #fef3c7;
+            border-radius: 0.25rem;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .condition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .condition-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .condition-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .condition-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .condition-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #1C1C1C;
+            margin: 0;
+        }
+
+        .condition-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.75rem;
+        }
+
+        .condition-pathways {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .eye-icon {
+            width: 32px;
+            height: 32px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen">
+        <div class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    <div>
+                        <h1 class="header-title">EyeSpecialist.ai</h1>
+                        <p class="header-subtitle">Advanced clinical decision support for optometry practice</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <h2 class="welcome-title">Welcome. Select the presenting condition for clinical guidance.</h2>
+                <p class="welcome-description">
+                    This advanced tool provides evidence-based triage pathways based on MECS, WOPEC, MEH, NHS and College of Optometrists guidelines. 
+                    Each pathway includes MECS eligibility, management protocols, appropriate referral pathways and billing guidance for optometry practice.
+                </p>
+                <p class="disclaimer">
+                    <strong>Clinical Notice:</strong> This tool incorporates MECS/PEARS pathways, NHS referral criteria, and College of Optometrists guidance. 
+                    Always use your clinical judgement and consider patient-specific factors. Document all clinical decisions appropriately.
+                </p>
+            </div>
+
+            <div class="condition-grid" id="condition-grid">
+                <!-- Conditions will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessment Screen -->
+    <div id="assessment-screen" class="hidden">
+        <!-- Assessment content will be added when needed -->
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="hidden">
+        <!-- Results content will be added when needed -->
+    </div>
+
+    <script>
+        // Simplified clinical conditions for display
+        const conditions = [
+            {
+                name: "Red Eye",
+                description: "Comprehensive assessment for red eye presentations including infection, inflammation, and sight-threatening conditions",
+                pathways: ["Unilateral", "Bilateral", "Contact lens-related", "Post-operative"]
+            },
+            {
+                name: "Flashes & Floaters",
+                description: "Assessment for posterior vitreous detachment and retinal pathology",
+                pathways: ["Acute onset", "Chronic symptoms", "High-risk features"]
+            },
+            {
+                name: "Sudden Vision Loss",
+                description: "Rapid assessment for acute vision loss - time-critical pathology",
+                pathways: ["Vascular", "Inflammatory", "Retinal", "Neurological"]
+            },
+            {
+                name: "Raised IOP",
+                description: "Management pathway for elevated intraocular pressure",
+                pathways: ["Acute symptomatic", "Chronic asymptomatic", "Steroid-induced"]
+            },
+            {
+                name: "Eyelid Problems",
+                description: "Assessment for lid malposition, infection, and malignancy",
+                pathways: ["Infectious", "Mechanical", "Neoplastic", "Inflammatory"]
+            },
+            {
+                name: "Watery Eyes",
+                description: "Evaluation of epiphora - distinguishing reflex from obstructive causes",
+                pathways: ["Reflex tearing", "Lacrimal obstruction", "Lid malposition"]
+            },
+            {
+                name: "Pediatric Eye Problems",
+                description: "Age-appropriate assessment for children's eye conditions",
+                pathways: ["Infant (<1yr)", "Toddler (1-3yr)", "School age (4-10yr)"]
+            },
+            {
+                name: "Diplopia",
+                description: "Double vision assessment - distinguishing neurological from mechanical causes",
+                pathways: ["Monocular", "Binocular", "Variable"]
+            },
+            {
+                name: "Headaches with Visual Symptoms",
+                description: "Differentiating primary headaches from sight/life-threatening causes",
+                pathways: ["Migraine", "Raised ICP", "Vascular", "Ocular"]
+            },
+            {
+                name: "Corneal Problems",
+                description: "Assessment of corneal pathology including trauma, infection, and dystrophies",
+                pathways: ["Traumatic", "Infectious", "Inflammatory", "Degenerative"]
+            }
+        ];
+
+        // Function to display conditions
+        function displayConditions() {
+            const conditionGrid = document.getElementById('condition-grid');
+            if (!conditionGrid) {
+                console.error('Condition grid element not found');
+                return;
+            }
+            
+            console.log('Found condition grid, clearing content...');
+            conditionGrid.innerHTML = '';
+            
+            console.log(`Creating ${conditions.length} condition cards...`);
+            
+            conditions.forEach((condition, index) => {
+                console.log(`Creating card ${index + 1}: ${condition.name}`);
+                
+                const card = document.createElement('button');
+                card.className = 'condition-card';
+                card.onclick = () => selectCondition(condition.name);
+                
+                card.innerHTML = `
+                    <div class="condition-header">
+                        <h3 class="condition-title">${condition.name}</h3>
+                        <svg class="icon" viewBox="0 0 24 24" style="opacity: 0.5;">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                    <p class="condition-description">${condition.description}</p>
+                    <p class="condition-pathways">Pathways: ${condition.pathways.join(', ')}</p>
+                `;
+                
+                conditionGrid.appendChild(card);
+            });
+            
+            console.log('All condition cards created successfully');
+            console.log('Grid HTML length:', conditionGrid.innerHTML.length);
+        }
+
+        // Function to select condition
+        function selectCondition(conditionName) {
+            alert(`You selected: ${conditionName}\n\nThe full assessment functionality would load here.`);
+            // In the full version, this would transition to the assessment screen
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, displaying conditions...');
+            displayConditions();
+        });
+    </script>
+</body>
+</html>
