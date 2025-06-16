@@ -479,7 +479,301 @@
             border-left: 4px solid #0284c7;
             margin-bottom: 1rem;
         }
+        /* Severity Score Styles */
+        .severity-indicator {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .severity-score {
+            font-weight: 600;
+            color: #1C1C1C;
+            margin-bottom: 0.25rem;
+        }
+
+        .severity-bar {
+            width: 100%;
+            height: 0.5rem;
+            background-color: #e5e7eb;
+            border-radius: 0.25rem;
+            margin-top: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .severity-fill {
+            height: 100%;
+            border-radius: 0.25rem;
+            transition: width 0.5s ease;
+            background: linear-gradient(to right, #22c55e, #FFC300, #dc3545);
+        }
+
+        /* GOS18 Form Styles */
+        .gos18-container {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #0A3D62;
+            border-radius: 0.5rem;
+            position: relative;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        @media (min-width: 768px) {
+            .gos18-container {
+                padding: 2rem;
+            }
+        }
+
+        .gos18-header {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #0A3D62;
+        }
+
+        @media (min-width: 768px) {
+            .gos18-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        .gos18-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #0A3D62;
+        }
+
+        .gos18-subtitle {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .gos18-close {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+            align-self: flex-start;
+        }
+
+        .gos18-close:hover {
+            background-color: #b91c1c;
+        }
+
+        .gos18-form {
+            font-size: 0.75rem;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .gos18-form table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            background: white;
+        }
+
+        .gos18-form th,
+        .gos18-form td {
+            border: 1px solid #333;
+            padding: 0.25rem;
+            text-align: left;
+            vertical-align: middle;
+            min-width: 60px;
+        }
+
+        .gos18-form th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+
+        .gos18-form input[type="text"],
+        .gos18-form input[type="date"],
+        .gos18-form input[type="tel"],
+        .gos18-form input[type="email"],
+        .gos18-form input[type="time"],
+        .gos18-form textarea {
+            width: calc(100% - 0.5rem);
+            padding: 0.25rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-family: 'Arial', sans-serif;
+            background: white;
+        }
+
+        .gos18-form textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .gos18-form input[type="checkbox"] {
+            margin-right: 0.25rem;
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+        }
+
+        .gos18-section {
+            margin-bottom: 1rem;
+        }
+
+        .gos18-section-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            background-color: #e5e7eb;
+            padding: 0.375rem;
+            border: 1px solid #333;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .gos18-checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .gos18-checkbox-item {
+            display: flex;
+            align-items: center;
+            min-width: 150px;
+            margin-bottom: 0.25rem;
+        }
+
+        .gos18-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .gos18-button {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .gos18-download {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+        }
+
+        .gos18-download:hover {
+            background-color: #2563eb;
+        }
+
+        .gos18-copy {
+            background-color: #10b981;
+            color: white;
+            border: none;
+        }
+
+        .gos18-copy:hover {
+            background-color: #059669;
+        }
+
+        .gos18-email {
+            background-color: #8b5cf6;
+            color: white;
+            border: none;
+        }
+
+        .gos18-email:hover {
+            background-color: #7c3aed;
+        }
+
+        .gos18-toggle {
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            width: 100%;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .gos18-toggle:hover {
+            background-color: #4f46e5;
+        }
+
+        /* Medication Box */
+        .medications-box {
+            background-color: #fef3c7;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border-left: 4px solid #f59e0b;
+            margin-bottom: 1rem;
+        }
+
+        .medications-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .safety-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .safety-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .forms-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .forms-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        @media print {
+            .gos18-close,
+            .gos18-actions,
+            .gos18-toggle,
+            .action-buttons,
+            .back-button {
+                display: none !important;
+            }
+        }
     </style>
+    <!-- Add jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <!-- Welcome Screen -->
@@ -632,6 +926,13 @@
                     <p class="reasoning-text" id="reasoning-text">Reasoning will appear here</p>
                 </div>
 
+                <div class="severity-indicator" id="severity-indicator">
+                    <div class="severity-score" id="severity-score">Clinical Severity Score: 0</div>
+                    <div class="severity-bar">
+                        <div class="severity-fill" id="severity-fill"></div>
+                    </div>
+                </div>
+
                 <div class="section-margin">
                     <h3 class="section-title">
                         <svg class="icon" viewBox="0 0 24 24">
@@ -672,11 +973,206 @@
                             <!-- Management steps will be populated by JavaScript -->
                         </ul>
                     </div>
+                    <div class="medications-box" id="medications-box">
+                        <h4 class="medications-title">Medication Protocol</h4>
+                        <ul class="management-list" id="medications-list">
+                            <!-- Medications will be populated by JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section-margin">
+                    <h3 class="section-title">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                            <polyline points="14,2 14,8 20,8"></polyline>
+                        </svg>
+                        Documentation Required
+                    </h3>
+                    <ul class="forms-list" id="forms-list">
+                        <!-- Forms will be populated by JavaScript -->
+                    </ul>
+                </div>
+
+                <div class="section-margin">
+                    <h3 class="section-title">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                        Safety-Netting Advice
+                    </h3>
+                    <ul class="safety-list" id="safety-list">
+                        <!-- Safety netting advice will be populated by JavaScript -->
+                    </ul>
                 </div>
 
                 <div class="action-buttons">
                     <button class="secondary-button" onclick="startOver()">New Assessment</button>
                     <button class="primary-button" onclick="window.print()">Generate Referral Letter</button>
+                </div>
+            </div>
+
+            <!-- GOS18 Form Toggle Button -->
+            <button class="gos18-toggle" onclick="toggleGOS18Form()">
+                <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; margin-right: 0.5rem;">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                Generate GOS18 Referral Form
+            </button>
+
+            <!-- GOS18 Form Container -->
+            <div id="gos18-form-container" class="gos18-container hidden">
+                <div class="gos18-header">
+                    <div>
+                        <h3 class="gos18-title">GOS 18</h3>
+                        <p class="gos18-subtitle">Referral/Notification (Always at optometrist)</p>
+                        <p class="gos18-subtitle">Please contact the patient if they do not contact you or do not attend</p>
+                    </div>
+                    <button class="gos18-close" onclick="hideGOS18Form()">✕ Close</button>
+                </div>
+
+                <form id="gos18-form" class="gos18-form">
+                    <!-- Patient Details Section -->
+                    <div class="gos18-section">
+                        <div class="gos18-section-title">CONSULTATION DATE / Patient Details</div>
+                        <table>
+                            <tr>
+                                <td><strong>Title:</strong></td>
+                                <td><input type="text" name="title" placeholder="Mr/Mrs/Miss/Ms/Other"></td>
+                                <td><strong>DoB:</strong></td>
+                                <td><input type="date" name="dob"></td>
+                                <td rowspan="3"><strong>Address:</strong></td>
+                                <td rowspan="3"><textarea name="address" rows="3"></textarea></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Surname:</strong></td>
+                                <td><input type="text" name="surname"></td>
+                                <td><strong>Tel (H):</strong></td>
+                                <td><input type="tel" name="telHome"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>First Names:</strong></td>
+                                <td><input type="text" name="firstName"></td>
+                                <td><strong>Tel (M):</strong></td>
+                                <td><input type="tel" name="telMobile"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <strong>Post Code:</strong> <input type="text" name="postcode" style="width: 200px;">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- GP Details Section -->
+                    <div class="gos18-section">
+                        <div class="gos18-section-title">GP Details / Optometrist Details</div>
+                        <table>
+                            <tr>
+                                <td><strong>Name Address:</strong></td>
+                                <td><input type="text" name="gpName"></td>
+                                <td><strong>Name Address:</strong></td>
+                                <td><input type="text" name="optName"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>E-Mail:</strong></td>
+                                <td><input type="email" name="gpEmail"></td>
+                                <td><strong>E-Mail:</strong></td>
+                                <td><input type="email" name="optEmail"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tel:</strong></td>
+                                <td><input type="tel" name="gpTel"></td>
+                                <td><strong>Tel:</strong></td>
+                                <td><input type="tel" name="optTel"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Clinical Findings Section -->
+                    <div class="gos18-section">
+                        <div class="gos18-section-title">Provisional Diagnosis</div>
+                        <table>
+                            <tr>
+                                <td colspan="6">
+                                    <strong>Salient Symptoms, Signs, History, Clinical Findings, Reason for Referral and Provisional Diagnosis:</strong><br>
+                                    <textarea name="clinicalFindings" rows="4" style="width: 100%;" id="gos18-clinical-findings"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Referral Section -->
+                    <div class="gos18-section">
+                        <div class="gos18-section-title">Referral</div>
+                        <table>
+                            <tr>
+                                <td colspan="6">
+                                    <div class="gos18-checkbox-group">
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="referralHES" id="referralHES"> 
+                                            <label for="referralHES">HES</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="referralOcular" id="referralOcular"> 
+                                            <label for="referralOcular">Ocular Emergency - to Hospital A&E Eye Service</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="referralSemi" id="referralSemi"> 
+                                            <label for="referralSemi">Semi-Urgent - to HES within 4 weeks</label>
+                                        </div>
+                                        <div class="gos18-checkbox-item">
+                                            <input type="checkbox" name="referralRoutine" id="referralRoutine"> 
+                                            <label for="referralRoutine">Routine - to HES within 12 weeks</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Optometrist Details Section -->
+                    <div class="gos18-section">
+                        <div class="gos18-section-title">Optometrist Name / Date</div>
+                        <table>
+                            <tr>
+                                <td><strong>Signature:</strong></td>
+                                <td><input type="text" name="optSignature" placeholder="Type name"></td>
+                                <td><strong>GOC No:</strong></td>
+                                <td><input type="text" name="gocNumber"></td>
+                                <td><strong>Date:</strong></td>
+                                <td><input type="date" name="referralDate" id="referralDate"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+
+                <div class="gos18-actions">
+                    <button type="button" class="gos18-button gos18-download" onclick="downloadGOS18()">
+                        <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; margin-right: 0.5rem;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download PDF
+                    </button>
+                    <button type="button" class="gos18-button gos18-copy" onclick="copyGOS18()">
+                        <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; margin-right: 0.5rem;">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy Form
+                    </button>
+                    <button type="button" class="gos18-button gos18-email" onclick="emailGOS18()">
+                        <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; margin-right: 0.5rem;">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        Email Form
+                    </button>
                 </div>
             </div>
         </div>
