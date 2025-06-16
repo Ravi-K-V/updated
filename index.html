@@ -1261,6 +1261,19 @@
                         </table>
                     </div>
 
+                    <!-- Safety Netting Advice Section -->
+                    <div class="gos18-section">
+                        <div class="gos18-section-title">Safety-Netting Advice Given to Patient</div>
+                        <table>
+                            <tr>
+                                <td colspan="6">
+                                    <strong>Patient advised regarding symptoms requiring immediate return:</strong><br>
+                                    <textarea name="safetyNettingAdvice" rows="3" style="width: 100%;" id="gos18-safety-netting"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
                     <!-- Referral Section -->
                     <div class="gos18-section">
                         <div class="gos18-section-title">Referral</div>
@@ -1433,47 +1446,81 @@
         // Severity scoring system
         const severityScoring = {
             "Red Eye": {
-                "vision": { "Normal vision": 0, "Mild blur": 2, "Significant vision loss": 5 },
-                "pain": { "No pain": 0, "Mild discomfort": 1, "Severe pain with photophobia": 4 },
-                "discharge": { "No discharge": 0, "Watery discharge": 1, "Mucopurulent discharge": 2 }
+                "vision_affected": { "Normal vision": 0, "Mild blur": 2, "Significant vision loss": 5 },
+                "pain_severity": { "No pain": 0, "Mild discomfort": 1, "Severe pain with photophobia": 4 },
+                "recent_surgery": { "Yes": 5, "No": 0 },
+                "contact_lens": { "Yes": 3, "No": 0 },
+                "discharge": { "No discharge": 0, "Watery discharge": 1, "Mucopurulent discharge": 2 },
+                "pupil_size": { "Smaller/same as other eye": 1, "Larger than other eye": 4, "Fixed and dilated": 5 },
+                "corneal_staining": { "No staining": 0, "Punctate staining": 2, "Epithelial defect": 4, "Dendritic pattern": 5, "Not tested": 1 }
             },
             "Flashes & Floaters": {
-                "onset": { "Within 24 hours": 5, "Within 1 week": 3, "Within 1 month": 2, "Over 1 month ago": 1 },
-                "field": { "Yes - progressive": 5, "Yes - stable": 3, "No": 0 },
-                "floaters": { "Yes - shower of floaters": 5, "Yes - few new floaters": 3, "No change": 1 }
+                "onset_timing": { "Within 24 hours": 5, "Within 1 week": 3, "Within 1 month": 2, "Over 1 month ago": 1 },
+                "floater_increase": { "Yes - shower of floaters": 5, "Yes - few new floaters": 3, "No change": 1, "First time floaters": 2 },
+                "visual_field": { "Yes - progressive": 5, "Yes - stable": 3, "No": 0 },
+                "flash_pattern": { "Arc-like flashes in periphery": 4, "Central sparkles": 2, "Zigzag patterns": 2, "No flashes": 0 },
+                "risk_factors": { "High myopia (>-6D)": 3, "Previous retinal problems": 4, "Recent eye surgery": 3, "Family history RD": 2, "None": 0 },
+                "vision_quality": { "Normal": 0, "Slightly blurred": 2, "Significantly reduced": 5 }
             },
             "Sudden Vision Loss": {
-                "laterality": { "One eye": 3, "Both eyes": 4 },
-                "speed": { "Sudden (seconds)": 5, "Rapid (minutes)": 4, "Gradual (hours)": 2 },
-                "pain": { "No pain": 1, "Mild pain": 2, "Severe pain": 4, "Headache with jaw claudication": 5 }
+                "laterality": { "One eye (monocular)": 3, "Both eyes (binocular)": 4, "Unsure": 2 },
+                "onset_pattern": { "Sudden (seconds)": 5, "Rapid (minutes)": 4, "Gradual (hours)": 2, "Progressive (days)": 1 },
+                "pain_present": { "No pain": 1, "Mild discomfort": 2, "Severe pain": 4, "Pain on eye movement": 3 },
+                "gca_symptoms": { "Temporal headache": 5, "Jaw claudication": 5, "Scalp tenderness": 4, "None": 0, "Multiple symptoms": 5 },
+                "visual_pattern": { "Complete blackout": 5, "Central scotoma": 3, "Altitudinal defect": 4, "Curtain-like": 4, "Patchy loss": 2 },
+                "duration": { "Not transient": 3, "<5 minutes": 2, "5-30 minutes": 1, ">30 minutes": 2, "Recurring episodes": 3 }
             },
             "Raised IOP": {
-                "level": { "21-30 mmHg": 2, "31-40 mmHg": 4, ">40 mmHg": 5 },
-                "symptoms": { "No symptoms": 0, "Mild headache": 2, "Severe pain + nausea": 5 }
+                "iop_level": { "<21 mmHg": 0, "21-30 mmHg": 2, "31-40 mmHg": 4, ">40 mmHg": 5, "Not measured but symptomatic": 3 },
+                "symptoms": { "No symptoms": 0, "Mild headache": 2, "Severe pain + nausea": 5, "Halos around lights": 3, "Red eye": 3 },
+                "pupil_status": { "Normal reactive": 0, "Sluggish": 3, "Mid-dilated and fixed": 5, "Not assessed": 1 },
+                "medication_history": { "No eye drops": 0, "Steroid eye drops": 3, "Glaucoma drops": 1, "Recent dilating drops": 2 },
+                "risk_assessment": { "Hypermetropia": 2, "Family history glaucoma": 2, "Asian ethnicity": 2, "Shallow anterior chamber": 3, "None identified": 0 }
             },
             "Eyelid Problems": {
-                "type": { "Swelling": 3, "Malposition": 1, "Lump/lesion": 3, "Redness": 2 },
-                "systemic": { "None": 0, "Mild malaise": 2, "Fever": 4, "Very unwell": 5 }
+                "problem_type": { "Swelling": 3, "Malposition": 1, "Lump/lesion": 3, "Redness/inflammation": 2 },
+                "swelling_extent": { "Localized (stye/chalazion)": 1, "Whole lid": 3, "Lid + cheek": 5, "Not applicable": 0 },
+                "systemic_features": { "None": 0, "Mild malaise": 2, "Fever": 4, "Systemically unwell": 5 },
+                "eye_movement": { "Normal": 0, "Slightly restricted": 3, "Significantly restricted": 5, "Not tested": 1 },
+                "lesion_features": { "Smooth, mobile": 1, "Irregular edges": 3, "Ulcerated": 5, "Loss of lashes": 5, "Not applicable": 0 },
+                "duration": { "<1 week": 3, "1-4 weeks": 2, "1-3 months": 1, ">3 months": 1 }
             },
             "Watery Eyes": {
-                "laterality": { "One eye": 3, "Both eyes": 1 },
-                "triggers": { "Constant": 3, "Outdoors/wind": 1, "Reading": 2 }
+                "associated_symptoms": { "No - just watering": 1, "Irritation/grittiness": 2, "Redness": 3, "Discharge": 4 },
+                "laterality": { "One eye": 3, "Both eyes equally": 1, "Both but one worse": 2 },
+                "timing": { "Constant": 3, "Outdoors/wind": 1, "Reading/computer": 2, "Morning only": 1 },
+                "lid_position": { "Yes": 0, "Lower lid turning out": 3, "Lower lid turning in": 3, "Facial weakness": 4 },
+                "previous_episodes": { "No": 0, "Occasional styes": 1, "Recurrent infections": 3, "Dacryocystitis": 5 }
             },
             "Pediatric Eye Problems": {
-                "age": { "0-6 months": 4, "6-12 months": 3, "1-3 years": 2, ">3 years": 1 },
-                "reflex": { "Normal": 0, "Absent/white": 5, "Not checked": 2 }
+                "age_group": { "0-6 months": 4, "6-12 months": 3, "1-3 years": 2, "3-8 years": 1, ">8 years": 1 },
+                "presenting_problem": { "Squint/misalignment": 3, "Red/sticky eye": 2, "Poor vision": 4, "Abnormal appearance": 5, "Watery eye": 1 },
+                "red_reflex": { "Normal both eyes": 0, "Absent/white": 5, "Asymmetric": 4, "Not checked": 2 },
+                "onset_timing": { "Since birth": 3, "Recent weeks": 2, "Recent months": 1, "Intermittent": 1 },
+                "development": { "Yes": 0, "Delayed": 3, "Regression": 4, "Not sure": 1 },
+                "family_history": { "None": 0, "Squint": 2, "Lazy eye": 2, "Childhood cataracts": 4, "Retinoblastoma": 5 }
             },
             "Diplopia": {
-                "type": { "Resolves covering one eye": 3, "Persists with one eye": 1, "Variable": 2 },
-                "onset": { "Sudden": 5, "Gradual": 3, "Long-standing": 1 }
+                "type": { "Resolves with one eye covered (binocular)": 3, "Persists with one eye (monocular)": 1, "Variable": 2, "Unsure": 2 },
+                "onset": { "Sudden onset": 5, "Gradual over days": 3, "Progressive over weeks": 2, "Long-standing": 1 },
+                "pattern": { "Constant": 4, "Distance only": 2, "Near only": 2, "Varies through day": 3, "Certain directions": 2 },
+                "associated_features": { "None": 0, "Headache": 2, "Ptosis": 4, "Facial weakness": 5, "Pupil abnormality": 5 },
+                "risk_factors": { "None": 0, "Diabetes": 2, "Hypertension": 2, "Recent trauma": 3, "Thyroid disease": 2 }
             },
             "Headaches with Visual Symptoms": {
-                "pattern": { "Zigzag lines": 1, "Vision loss": 3, "Double vision": 4 },
-                "fundus": { "Normal": 0, "Disc swelling": 5, "Not examined": 2 }
+                "visual_symptoms": { "Zigzag lines/fortification": 1, "Transient vision loss": 3, "Persistent blur": 4, "Double vision": 4, "Visual field defect": 5 },
+                "headache_pattern": { "Classic migraine": 1, "Worse on waking": 4, "Sudden severe": 5, "Progressive worsening": 4, "With eye movement": 3 },
+                "fundoscopy": { "Normal": 0, "Disc swelling": 5, "Disc pallor": 4, "Not examined": 2 },
+                "age_symptoms": { "<50 years, familiar pattern": 1, ">50 years, new pattern": 4, "Any age, progressive": 3, "Any age, sudden onset": 4 },
+                "associated_features": { "Nausea only": 1, "Jaw claudication": 5, "Scalp tenderness": 5, "Red painful eye": 4, "None": 0 }
             },
             "Corneal Problems": {
-                "cause": { "Trauma": 3, "Contact lens related": 4, "No specific cause": 1 },
-                "staining": { "No staining": 0, "Punctate": 2, "Dendritic": 5, "Large defect": 4, "Not tested": 1 }
+                "precipitating_event": { "Trauma/injury": 3, "Foreign body": 2, "Chemical exposure": 5, "No specific event": 1 },
+                "contact_lens_user": { "Yes - current user": 4, "Yes - but not recently": 2, "No": 0, "Overnight wear": 5 },
+                "pain_level": { "No pain": 0, "Mild discomfort": 1, "Moderate pain": 3, "Severe pain": 5 },
+                "vision_impact": { "No change": 0, "Slight blur": 2, "Significant reduction": 4, "Can't see details": 5 },
+                "fluorescein_pattern": { "No uptake": 0, "Linear abrasion": 2, "Punctate staining": 2, "Dendritic pattern": 5, "Large epithelial defect": 4, "Not tested": 1 },
+                "associated_features": { "White infiltrate": 4, "Hypopyon": 5, "Corneal thinning": 5, "None visible": 0 }
             }
         };
 
@@ -1641,49 +1688,162 @@
         const clinicalNotesTemplates = {
             "Red Eye": {
                 "emergency": (responses) => 
-                    `URGENT: ${responses.laterality} red eye with ${responses.vision}. 
-                    ${responses.pain === 'Severe pain with photophobia' ? 'Severe photophobia present. ' : ''}
-                    ${responses.discharge}. Requires immediate assessment to exclude sight-threatening pathology.`,
+                    `URGENT: ${responses.laterality} red eye with ${responses.vision_affected}. 
+                    ${responses.pain_severity === 'Severe pain with photophobia' ? 'Severe photophobia present. ' : ''}
+                    ${responses.recent_surgery === 'Yes' ? 'POST-OPERATIVE - HIGH RISK. ' : ''}
+                    ${responses.contact_lens === 'Yes' ? 'Contact lens wearer. ' : ''}
+                    ${responses.discharge}. Pupil: ${responses.pupil_size}. 
+                    ${responses.corneal_staining !== 'Not tested' ? `Staining: ${responses.corneal_staining}. ` : ''}
+                    Requires immediate assessment to exclude sight-threatening pathology.`,
                 
                 "urgent": (responses) => 
-                    `${responses.laterality} red eye, ${responses.pain}. Vision: ${responses.vision}. 
-                    ${responses.discharge}. Clinical features suggest inflammatory/infective cause requiring prompt treatment.`,
+                    `${responses.laterality} red eye, ${responses.pain_severity}. Vision: ${responses.vision_affected}. 
+                    ${responses.discharge}. ${responses.contact_lens === 'Yes' ? 'Contact lens wearer. ' : ''}
+                    Clinical features suggest inflammatory/infective cause requiring prompt treatment.`,
                 
                 "routine": (responses) => 
                     `${responses.laterality} red eye, likely ${responses.discharge === 'Mucopurulent discharge' ? 'bacterial conjunctivitis' : 'viral/allergic'}. 
-                    Vision: ${responses.vision}. Conservative management initiated.`
+                    Vision: ${responses.vision_affected}. Conservative management initiated.`
             },
             "Flashes & Floaters": {
                 "emergency": (responses) => 
-                    `URGENT: ${responses.floaters === 'Yes - shower of floaters' ? 'Shower of new floaters' : 'Acute symptoms'} 
-                    with ${responses.field === 'Yes - progressive' ? 'PROGRESSIVE FIELD DEFECT - ?RD. ' : ''}
-                    Onset ${responses.onset}. Requires immediate dilated retinal examination to exclude retinal tear/detachment.`,
+                    `URGENT: ${responses.floater_increase === 'Yes - shower of floaters' ? 'Shower of new floaters' : 'Acute symptoms'} 
+                    with ${responses.flash_pattern || 'flashing lights'}. 
+                    ${responses.visual_field === 'Yes - progressive' ? 'PROGRESSIVE FIELD DEFECT - ?RD. ' : ''}
+                    Onset ${responses.onset_timing}. Risk factors: ${responses.risk_factors}. 
+                    Vision quality: ${responses.vision_quality}.
+                    Requires immediate dilated retinal examination to exclude retinal tear/detachment.`,
                 
                 "urgent": (responses) => 
-                    `Recent onset flashes and floaters, started ${responses.onset}. 
+                    `Recent onset ${responses.flash_pattern || 'flashes'} and floaters, started ${responses.onset_timing}. 
+                    ${responses.risk_factors !== 'None' ? `High risk patient (${responses.risk_factors}). ` : ''}
+                    Floater increase: ${responses.floater_increase}. Vision: ${responses.vision_quality}.
                     No field defect currently. Requires dilated peripheral retinal examination within 48 hours 
                     to exclude retinal tear. Patient counselled re RD symptoms.`,
                 
                 "routine": (responses) => 
-                    `Chronic floaters ${responses.onset}. No recent change. 
-                    Vision stable. No field defect. 
+                    `Chronic floaters ${responses.onset_timing}. No recent change. 
+                    Vision ${responses.vision_quality}. No field defect. 
                     Likely benign PVD but requires confirmation with dilated examination.`
             },
             "Sudden Vision Loss": {
                 "emergency": (responses) => 
-                    `EMERGENCY: Sudden ${responses.laterality} vision loss. 
-                    ${responses.pain === 'Headache with jaw claudication' ? 'GCA SYMPTOMS - STARTED HIGH-DOSE STEROIDS. ' : ''}
-                    Onset ${responses.speed}. Requires immediate assessment and treatment.`,
+                    `EMERGENCY: Sudden ${responses.laterality} vision loss (${responses.visual_pattern}). 
+                    ${responses.gca_symptoms !== 'None' ? `GCA SYMPTOMS: ${responses.gca_symptoms} - STARTED HIGH-DOSE STEROIDS. ` : ''}
+                    Onset ${responses.onset_pattern}. ${responses.pain_present}. 
+                    ${responses.duration === 'Not transient' ? 'Persistent loss.' : `Duration: ${responses.duration}.`}
+                    Requires immediate assessment and treatment.`,
                 
                 "urgent": (responses) => 
-                    `Acute ${responses.laterality} visual disturbance. 
-                    Onset ${responses.speed}. ${responses.pain}. 
-                    Requires urgent assessment for cause.`,
+                    `Acute ${responses.laterality} visual disturbance. ${responses.visual_pattern} pattern. 
+                    Onset ${responses.onset_pattern}. ${responses.pain_present}. 
+                    ${responses.duration !== 'Not transient' ? `Transient episode lasting ${responses.duration}. ` : ''}
+                    Requires urgent assessment for ${responses.duration === '<5 minutes' ? 'TIA/stroke risk' : 'cause'}.`,
                 
                 "routine": (responses) => 
-                    `${responses.speed} vision loss, ${responses.laterality}. 
-                    No acute features. 
+                    `${responses.onset_pattern} vision loss, ${responses.laterality}. 
+                    ${responses.visual_pattern} pattern. No acute features. 
                     Requires ophthalmology assessment to determine cause and optimize management.`
+            },
+            "Raised IOP": {
+                "emergency": (responses) => 
+                    `EMERGENCY: IOP ${responses.iop_level} with ${responses.symptoms}. 
+                    Pupil: ${responses.pupil_status}. ${responses.medication_history}. 
+                    Risk factors: ${responses.risk_assessment}. 
+                    Clinical features consistent with acute angle closure requiring immediate treatment.`,
+                
+                "urgent": (responses) => 
+                    `Raised IOP ${responses.iop_level}. Symptoms: ${responses.symptoms}. 
+                    Pupil status: ${responses.pupil_status}. Current medications: ${responses.medication_history}. 
+                    Requires urgent assessment and IOP management.`,
+                
+                "routine": (responses) => 
+                    `Ocular hypertension. IOP ${responses.iop_level}, ${responses.symptoms}. 
+                    Risk assessment: ${responses.risk_assessment}. 
+                    Requires glaucoma risk stratification and monitoring.`
+            },
+            "Eyelid Problems": {
+                "emergency": (responses) => 
+                    `URGENT: ${responses.problem_type} with ${responses.systemic_features}. 
+                    Swelling extent: ${responses.swelling_extent}. Eye movements: ${responses.eye_movement}. 
+                    Duration: ${responses.duration}. 
+                    Clinical features suggest orbital involvement requiring immediate admission.`,
+                
+                "urgent": (responses) => 
+                    `Lid ${responses.problem_type}. ${responses.systemic_features}. 
+                    ${responses.lesion_features !== 'Not applicable' ? `Lesion features: ${responses.lesion_features}. ` : ''}
+                    Duration: ${responses.duration}. Requires urgent assessment.`,
+                
+                "routine": (responses) => 
+                    `Lid ${responses.problem_type}, duration ${responses.duration}. 
+                    No systemic features. ${responses.lesion_features !== 'Not applicable' ? `Features: ${responses.lesion_features}. ` : ''}
+                    Routine oculoplastics referral indicated.`
+            },
+            "Watery Eyes": {
+                "routine": (responses) => 
+                    `${responses.laterality} epiphora. ${responses.associated_symptoms}. 
+                    Timing: ${responses.timing}. Lid position: ${responses.lid_position}. 
+                    Previous episodes: ${responses.previous_episodes}. 
+                    ${responses.laterality === 'One eye' ? 'Likely nasolacrimal obstruction' : 'Likely reflex tearing'}.`
+            },
+            "Pediatric Eye Problems": {
+                "emergency": (responses) => 
+                    `URGENT PAEDIATRIC: Age ${responses.age_group}, presenting with ${responses.presenting_problem}. 
+                    Red reflex: ${responses.red_reflex}. Onset: ${responses.onset_timing}. 
+                    Development: ${responses.development}. Family history: ${responses.family_history}. 
+                    Requires urgent pediatric ophthalmology assessment to exclude serious pathology.`,
+                
+                "urgent": (responses) => 
+                    `Child age ${responses.age_group} with ${responses.presenting_problem}. 
+                    Red reflex: ${responses.red_reflex}. Onset: ${responses.onset_timing}. 
+                    Family history: ${responses.family_history}. Requires pediatric assessment.`,
+                
+                "routine": (responses) => 
+                    `Pediatric referral: Age ${responses.age_group}, ${responses.presenting_problem}. 
+                    Onset ${responses.onset_timing}. Development normal. 
+                    Routine pediatric ophthalmology assessment recommended.`
+            },
+            "Diplopia": {
+                "urgent": (responses) => 
+                    `${responses.type} diplopia, ${responses.onset} onset. 
+                    Pattern: ${responses.pattern}. Associated features: ${responses.associated_features}. 
+                    Risk factors: ${responses.risk_factors}. 
+                    Requires urgent neuro-ophthalmology assessment to determine cause.`,
+                
+                "routine": (responses) => 
+                    `${responses.type} diplopia, ${responses.onset}. 
+                    Pattern: ${responses.pattern}. No associated neurological features. 
+                    Routine orthoptic/ophthalmology assessment indicated.`
+            },
+            "Headaches with Visual Symptoms": {
+                "emergency": (responses) => 
+                    `URGENT: Headache with ${responses.visual_symptoms}. Pattern: ${responses.headache_pattern}. 
+                    Fundoscopy: ${responses.fundoscopy}. Age/symptoms: ${responses.age_symptoms}. 
+                    Associated: ${responses.associated_features}. 
+                    Requires immediate investigation for raised ICP/GCA.`,
+                
+                "routine": (responses) => 
+                    `Headache with ${responses.visual_symptoms}. ${responses.headache_pattern} pattern. 
+                    Fundoscopy: ${responses.fundoscopy}. ${responses.age_symptoms}. 
+                    Likely primary headache disorder, routine management appropriate.`
+            },
+            "Corneal Problems": {
+                "emergency": (responses) => 
+                    `URGENT: Corneal pathology. ${responses.precipitating_event}. 
+                    ${responses.contact_lens_user === 'Yes - current user' ? 'CONTACT LENS KERATITIS RISK. ' : ''}
+                    Pain: ${responses.pain_level}. Vision: ${responses.vision_impact}. 
+                    Staining: ${responses.fluorescein_pattern}. ${responses.associated_features}. 
+                    Requires immediate ophthalmology assessment and treatment.`,
+                
+                "urgent": (responses) => 
+                    `Corneal ${responses.precipitating_event}. ${responses.contact_lens_user}. 
+                    Pain level: ${responses.pain_level}. Vision impact: ${responses.vision_impact}. 
+                    Fluorescein: ${responses.fluorescein_pattern}. Requires same-day assessment.`,
+                
+                "routine": (responses) => 
+                    `Corneal abrasion/SPK. Cause: ${responses.precipitating_event}. 
+                    Minimal pain, vision preserved. Staining: ${responses.fluorescein_pattern}. 
+                    Conservative management with antibiotic prophylaxis.`
             }
         };
 
@@ -1697,42 +1857,75 @@
                     "Severe headache with vomiting",
                     "Pain waking patient at night",
                     "Reduced vision",
-                    "Contact lens wearer with symptoms"
+                    "Contact lens wearer with symptoms",
+                    "Preceding trauma (blunt/high velocity/chemical)"
                 ],
                 questions: [
                     {
                         id: "laterality",
                         text: "Is the red eye unilateral or bilateral?",
                         options: ["Unilateral", "Bilateral"],
-                        clinicalNote: "Bilateral red eye often suggests allergic or infective causes"
+                        clinicalNote: "Bilateral red eye often suggests allergic or infective causes, while unilateral may indicate more serious pathology"
                     },
                     {
-                        id: "vision",
-                        text: "Is vision affected?",
-                        options: ["Normal vision", "Mild blur", "Significant vision loss"],
-                        clinicalNote: "Vision loss with red eye requires urgent assessment"
+                        id: "recent_surgery",
+                        text: "Has the patient had recent eye surgery or injection?",
+                        subtitle: "Within the last 4 weeks",
+                        options: ["Yes", "No"],
+                        clinicalNote: "Post-operative red eye requires urgent assessment to exclude endophthalmitis"
                     },
                     {
-                        id: "pain",
+                        id: "contact_lens",
+                        text: "Is the patient a contact lens wearer?",
+                        options: ["Yes", "No"],
+                        clinicalNote: "Contact lens-related keratitis requires different management and has higher risk"
+                    },
+                    {
+                        id: "pain_severity",
                         text: "What is the severity of pain?",
                         options: ["No pain", "Mild discomfort", "Severe pain with photophobia"],
-                        clinicalNote: "Severe pain suggests serious pathology"
+                        clinicalNote: "Severe pain with photophobia suggests serious pathology (uveitis, keratitis, scleritis)"
                     },
                     {
                         id: "discharge",
                         text: "Is there discharge present?",
+                        subtitle: "Note the type if present",
                         options: ["No discharge", "Watery discharge", "Mucopurulent discharge"],
-                        clinicalNote: "Type of discharge helps differentiate causes"
+                        clinicalNote: "Mucopurulent suggests bacterial; watery suggests viral or allergic"
+                    },
+                    {
+                        id: "vision_affected",
+                        text: "Is vision affected?",
+                        options: ["Normal vision", "Mild blur", "Significant vision loss"],
+                        clinicalNote: "Vision loss with red eye is always concerning and requires urgent assessment"
+                    },
+                    {
+                        id: "pupil_size",
+                        text: "Compare pupil size in affected eye",
+                        options: ["Smaller/same as other eye", "Larger than other eye", "Fixed and dilated"],
+                        clinicalNote: "Large pupil with red eye suggests acute angle closure glaucoma"
+                    },
+                    {
+                        id: "corneal_staining",
+                        text: "Does the cornea stain with fluorescein?",
+                        subtitle: "If fluorescein available",
+                        options: ["No staining", "Punctate staining", "Epithelial defect", "Dendritic pattern", "Not tested"],
+                        clinicalNote: "Dendritic pattern suggests herpetic keratitis; never use steroids without specialist input"
                     }
                 ],
                 recommendations: {
+                    emergency: {
+                        criteria: ["recent_surgery:Yes", "vision_affected:Significant vision loss"],
+                        condition: "Post-operative complication with vision loss",
+                        management: "IMMEDIATE ophthalmology referral - ?endophthalmitis"
+                    },
                     urgent: {
-                        criteria: ["vision:Significant vision loss", "pain:Severe pain with photophobia"],
+                        criteria: ["vision_affected:Significant vision loss", "pain_severity:Severe pain with photophobia"],
                         condition: "Possible uveitis, keratitis, or acute glaucoma",
                         management: "Same-day ophthalmology referral required"
                     },
                     routine: {
-                        criteria: ["discharge:Mucopurulent discharge", "vision:Normal vision"],
+                        criteria: ["discharge:Mucopurulent discharge", "vision_affected:Normal vision"],
                         condition: "Likely bacterial conjunctivitis",
                         management: "Chloramphenicol QDS 7 days, review if no improvement"
                     }
@@ -1745,41 +1938,63 @@
                     "Shower of floaters/cobwebs",
                     "Progressive visual field loss",
                     "Curtain/shadow in vision",
-                    "Recent onset arc-like flashes"
+                    "Recent onset arc-like flashes",
+                    "High myopia (>-6D)",
+                    "Previous retinal detachment"
                 ],
                 questions: [
                     {
-                        id: "onset",
+                        id: "onset_timing",
                         text: "When did symptoms begin?",
                         options: ["Within 24 hours", "Within 1 week", "Within 1 month", "Over 1 month ago"],
-                        clinicalNote: "Acute onset requires urgent assessment"
+                        clinicalNote: "Acute onset requires urgent assessment to exclude retinal tear"
                     },
                     {
-                        id: "field",
-                        text: "Any visual field loss?",
-                        options: ["Yes - progressive", "Yes - stable", "No"],
-                        clinicalNote: "Progressive field loss indicates retinal detachment"
-                    },
-                    {
-                        id: "floaters",
+                        id: "floater_increase",
                         text: "Have floaters increased?",
-                        options: ["Yes - shower of floaters", "Yes - few new floaters", "No change"],
-                        clinicalNote: "Shower of floaters suggests vitreous hemorrhage"
+                        subtitle: "Compare to baseline",
+                        options: ["Yes - shower of floaters", "Yes - few new floaters", "No change", "First time floaters"],
+                        clinicalNote: "Shower of floaters suggests vitreous hemorrhage from retinal tear"
+                    },
+                    {
+                        id: "visual_field",
+                        text: "Any visual field loss?",
+                        subtitle: "Shadow, curtain, or missing area",
+                        options: ["Yes - progressive", "Yes - stable", "No"],
+                        clinicalNote: "Progressive field loss indicates retinal detachment requiring emergency surgery"
+                    },
+                    {
+                        id: "flash_pattern",
+                        text: "Describe the flashes",
+                        options: ["Arc-like flashes in periphery", "Central sparkles", "Zigzag patterns", "No flashes"],
+                        clinicalNote: "Peripheral arc flashes suggest vitreoretinal traction"
+                    },
+                    {
+                        id: "risk_factors",
+                        text: "Risk factors present?",
+                        options: ["High myopia (>-6D)", "Previous retinal problems", "Recent eye surgery", "Family history RD", "None"],
+                        clinicalNote: "Multiple risk factors significantly increase retinal detachment risk"
+                    },
+                    {
+                        id: "vision_quality",
+                        text: "Current vision quality?",
+                        options: ["Normal", "Slightly blurred", "Significantly reduced"],
+                        clinicalNote: "Vision loss with flashes/floaters is concerning for detachment"
                     }
                 ],
                 recommendations: {
                     emergency: {
-                        criteria: ["field:Yes - progressive"],
+                        criteria: ["visual_field:Yes - progressive"],
                         condition: "Probable retinal detachment",
                         management: "IMMEDIATE ophthalmology referral - same day"
                     },
                     urgent: {
-                        criteria: ["onset:Within 24 hours", "floaters:Yes - shower of floaters"],
+                        criteria: ["onset_timing:Within 24 hours", "floater_increase:Yes - shower of floaters"],
                         condition: "Acute PVD with high risk of tear",
                         management: "Urgent dilated examination within 24-48 hours"
                     },
                     routine: {
-                        criteria: ["onset:Over 1 month ago", "field:No"],
+                        criteria: ["onset_timing:Over 1 month ago", "visual_field:No"],
                         condition: "Chronic floaters - likely benign",
                         management: "Routine referral if symptomatic"
                     }
@@ -1792,38 +2007,64 @@
                     "Complete vision loss",
                     "Giant cell arteritis symptoms",
                     "RAPD present",
-                    "Cherry red spot"
+                    "Cherry red spot",
+                    "Pale swollen disc",
+                    "Age >50 with headache"
                 ],
                 questions: [
                     {
                         id: "laterality",
                         text: "Which eye(s) affected?",
-                        options: ["One eye", "Both eyes"],
-                        clinicalNote: "Bilateral suggests neurological cause"
+                        options: ["One eye (monocular)", "Both eyes (binocular)", "Unsure"],
+                        clinicalNote: "Monocular suggests ocular pathology; binocular suggests neurological"
                     },
                     {
-                        id: "speed",
+                        id: "onset_pattern",
                         text: "Speed of vision loss?",
-                        options: ["Sudden (seconds)", "Rapid (minutes)", "Gradual (hours)"],
-                        clinicalNote: "Instantaneous suggests vascular occlusion"
+                        options: ["Sudden (seconds)", "Rapid (minutes)", "Gradual (hours)", "Progressive (days)"],
+                        clinicalNote: "Instantaneous loss suggests vascular occlusion"
                     },
                     {
-                        id: "pain",
-                        text: "Is there pain?",
-                        options: ["No pain", "Mild pain", "Severe pain", "Headache with jaw claudication"],
-                        clinicalNote: "Painless loss often vascular; jaw claudication = GCA"
+                        id: "pain_present",
+                        text: "Is there associated pain?",
+                        options: ["No pain", "Mild discomfort", "Severe pain", "Pain on eye movement"],
+                        clinicalNote: "Painless loss often vascular; painful suggests inflammatory/glaucoma"
+                    },
+                    {
+                        id: "gca_symptoms",
+                        text: "Any GCA symptoms?",
+                        subtitle: "If age >50",
+                        options: ["Temporal headache", "Jaw claudication", "Scalp tenderness", "None", "Multiple symptoms"],
+                        clinicalNote: "GCA requires IMMEDIATE high-dose steroids to save vision"
+                    },
+                    {
+                        id: "visual_pattern",
+                        text: "Pattern of vision loss?",
+                        options: ["Complete blackout", "Central scotoma", "Altitudinal defect", "Curtain-like", "Patchy loss"],
+                        clinicalNote: "Pattern helps localize: altitudinal=AION, central=macular, curtain=amaurosis/RD"
+                    },
+                    {
+                        id: "duration",
+                        text: "Is vision loss persistent?",
+                        options: ["Not transient", "<5 minutes", "5-30 minutes", ">30 minutes", "Recurring episodes"],
+                        clinicalNote: "Transient loss (amaurosis fugax) predicts stroke risk"
                     }
                 ],
                 recommendations: {
                     emergency: {
-                        criteria: ["pain:Headache with jaw claudication"],
+                        criteria: ["gca_symptoms:Jaw claudication"],
                         condition: "Giant cell arteritis suspected",
                         management: "START PREDNISOLONE 60-80mg IMMEDIATELY, urgent ESR/CRP"
                     },
                     urgent: {
-                        criteria: ["speed:Sudden (seconds)", "pain:No pain"],
+                        criteria: ["onset_pattern:Sudden (seconds)", "pain_present:No pain"],
                         condition: "Possible CRAO or CRVO",
                         management: "IMMEDIATE ophthalmology assessment required"
+                    },
+                    routine: {
+                        criteria: ["onset_pattern:Progressive (days)", "pain_present:No pain"],
+                        condition: "Gradual vision loss",
+                        management: "Routine ophthalmology assessment"
                     }
                 }
             },
@@ -1834,30 +2075,56 @@
                     "IOP >35 mmHg",
                     "Corneal edema",
                     "Fixed dilated pupil",
-                    "Severe pain with nausea"
+                    "Severe pain with nausea",
+                    "Visual halos"
                 ],
                 questions: [
                     {
-                        id: "level",
-                        text: "What is the IOP level?",
-                        options: ["21-30 mmHg", "31-40 mmHg", ">40 mmHg"],
-                        clinicalNote: "Higher levels require more urgent management"
+                        id: "iop_level",
+                        text: "What is the IOP measurement?",
+                        subtitle: "If known - otherwise select symptoms",
+                        options: ["<21 mmHg", "21-30 mmHg", "31-40 mmHg", ">40 mmHg", "Not measured but symptomatic"],
+                        clinicalNote: "IOP >30 with symptoms requires urgent management"
                     },
                     {
                         id: "symptoms",
-                        text: "Are there symptoms?",
-                        options: ["No symptoms", "Mild headache", "Severe pain + nausea"],
-                        clinicalNote: "Symptoms suggest acute angle closure"
+                        text: "Are there associated symptoms?",
+                        options: ["No symptoms", "Mild headache", "Severe pain + nausea", "Halos around lights", "Red eye"],
+                        clinicalNote: "Symptoms suggest acute angle closure requiring emergency treatment"
+                    },
+                    {
+                        id: "pupil_status",
+                        text: "Check pupil in affected eye",
+                        options: ["Normal reactive", "Sluggish", "Mid-dilated and fixed", "Not assessed"],
+                        clinicalNote: "Fixed mid-dilated pupil is pathognomonic for acute angle closure"
+                    },
+                    {
+                        id: "medication_history",
+                        text: "Current medications?",
+                        subtitle: "Particularly eye drops",
+                        options: ["No eye drops", "Steroid eye drops", "Glaucoma drops", "Recent dilating drops"],
+                        clinicalNote: "Steroid response can cause significant IOP elevation"
+                    },
+                    {
+                        id: "risk_assessment",
+                        text: "Risk factors present?",
+                        options: ["Hypermetropia", "Family history glaucoma", "Asian ethnicity", "Shallow anterior chamber", "None identified"],
+                        clinicalNote: "Multiple risk factors increase chance of angle closure"
                     }
                 ],
                 recommendations: {
                     emergency: {
-                        criteria: ["symptoms:Severe pain + nausea"],
+                        criteria: ["symptoms:Severe pain + nausea", "pupil_status:Mid-dilated and fixed"],
                         condition: "Acute angle closure glaucoma",
-                        management: "IMMEDIATE referral, start acetazolamide"
+                        management: "IMMEDIATE referral, start acetazolamide 500mg, topical therapy"
+                    },
+                    urgent: {
+                        criteria: ["iop_level:>40 mmHg", "symptoms:Halos around lights"],
+                        condition: "Significantly raised IOP",
+                        management: "Urgent ophthalmology within 24 hours, start topical therapy"
                     },
                     routine: {
-                        criteria: ["symptoms:No symptoms", "level:21-30 mmHg"],
+                        criteria: ["symptoms:No symptoms", "iop_level:21-30 mmHg"],
                         condition: "Ocular hypertension",
                         management: "Routine glaucoma assessment"
                     }
@@ -1870,30 +2137,60 @@
                     "Orbital signs (proptosis, restricted movements)",
                     "Systemically unwell with lid swelling",
                     "Loss of eyelashes",
-                    "Ulcerating lesion"
+                    "Ulcerating lesion",
+                    "Rapid growth"
                 ],
                 questions: [
                     {
-                        id: "type",
-                        text: "What is the primary problem?",
-                        options: ["Swelling", "Malposition", "Lump/lesion", "Redness"],
-                        clinicalNote: "Different pathways for each type"
+                        id: "problem_type",
+                        text: "What is the primary lid problem?",
+                        options: ["Swelling", "Malposition", "Lump/lesion", "Redness/inflammation"],
+                        clinicalNote: "Different pathways for infectious vs mechanical problems"
                     },
                     {
-                        id: "systemic",
+                        id: "swelling_extent",
+                        text: "If swelling, what is the extent?",
+                        options: ["Localized (stye/chalazion)", "Whole lid", "Lid + cheek", "Not applicable"],
+                        clinicalNote: "Extension beyond lid suggests orbital cellulitis"
+                    },
+                    {
+                        id: "systemic_features",
                         text: "Any systemic features?",
-                        options: ["None", "Mild malaise", "Fever", "Very unwell"],
-                        clinicalNote: "Systemic features may indicate orbital cellulitis"
+                        options: ["None", "Mild malaise", "Fever", "Systemically unwell"],
+                        clinicalNote: "Systemic features with lid swelling require admission"
+                    },
+                    {
+                        id: "eye_movement",
+                        text: "Are eye movements normal?",
+                        options: ["Normal", "Slightly restricted", "Significantly restricted", "Not tested"],
+                        clinicalNote: "Restricted movements indicate orbital involvement"
+                    },
+                    {
+                        id: "lesion_features",
+                        text: "If lesion present, describe features",
+                        options: ["Smooth, mobile", "Irregular edges", "Ulcerated", "Loss of lashes", "Not applicable"],
+                        clinicalNote: "Irregular/ulcerated lesions need urgent biopsy"
+                    },
+                    {
+                        id: "duration",
+                        text: "How long has problem been present?",
+                        options: ["<1 week", "1-4 weeks", "1-3 months", ">3 months"],
+                        clinicalNote: "Chronic lesions more likely benign but need assessment"
                     }
                 ],
                 recommendations: {
                     emergency: {
-                        criteria: ["systemic:Very unwell"],
-                        condition: "Possible orbital cellulitis",
-                        management: "ADMIT for IV antibiotics"
+                        criteria: ["systemic_features:Systemically unwell", "eye_movement:Significantly restricted"],
+                        condition: "Orbital cellulitis",
+                        management: "ADMIT immediately for IV antibiotics"
+                    },
+                    urgent: {
+                        criteria: ["lesion_features:Ulcerated", "lesion_features:Loss of lashes"],
+                        condition: "Suspected malignancy",
+                        management: "Urgent oculoplastics referral within 2 weeks"
                     },
                     routine: {
-                        criteria: ["type:Lump/lesion", "systemic:None"],
+                        criteria: ["problem_type:Lump/lesion", "systemic_features:None"],
                         condition: "Benign lid lesion likely",
                         management: "Routine oculoplastics referral"
                     }
@@ -1905,25 +2202,49 @@
                 redFlags: [
                     "Associated with lid swelling",
                     "Bloody tears",
-                    "Recurrent infections"
+                    "Recurrent infections",
+                    "Facial nerve palsy"
                 ],
                 questions: [
                     {
-                        id: "laterality",
-                        text: "Which eye(s) affected?",
-                        options: ["One eye", "Both eyes"],
-                        clinicalNote: "Unilateral suggests obstruction"
+                        id: "associated_symptoms",
+                        text: "Are there other eye symptoms?",
+                        options: ["No - just watering", "Irritation/grittiness", "Redness", "Discharge"],
+                        clinicalNote: "Associated symptoms suggest reflex tearing from ocular surface disease"
                     },
                     {
-                        id: "triggers",
+                        id: "laterality",
+                        text: "Which eye(s) affected?",
+                        options: ["One eye", "Both eyes equally", "Both but one worse"],
+                        clinicalNote: "Unilateral suggests obstruction; bilateral suggests reflex cause"
+                    },
+                    {
+                        id: "timing",
                         text: "When is watering worst?",
-                        options: ["Constant", "Outdoors/wind", "Reading"],
+                        options: ["Constant", "Outdoors/wind", "Reading/computer", "Morning only"],
                         clinicalNote: "Environmental triggers suggest reflex tearing"
+                    },
+                    {
+                        id: "lid_position",
+                        text: "Are the eyelids in normal position?",
+                        options: ["Yes", "Lower lid turning out", "Lower lid turning in", "Facial weakness"],
+                        clinicalNote: "Lid malposition prevents proper tear drainage"
+                    },
+                    {
+                        id: "previous_episodes",
+                        text: "Any history of lid infections?",
+                        options: ["No", "Occasional styes", "Recurrent infections", "Dacryocystitis"],
+                        clinicalNote: "Recurrent infections suggest nasolacrimal obstruction"
                     }
                 ],
                 recommendations: {
+                    urgent: {
+                        criteria: ["previous_episodes:Dacryocystitis", "associated_symptoms:Discharge"],
+                        condition: "Acute dacryocystitis",
+                        management: "Oral antibiotics, warm compresses, urgent lacrimal referral"
+                    },
                     routine: {
-                        criteria: ["laterality:One eye", "triggers:Constant"],
+                        criteria: ["laterality:One eye", "timing:Constant"],
                         condition: "Likely nasolacrimal obstruction",
                         management: "Routine lacrimal clinic referral"
                     }
@@ -1936,27 +2257,63 @@
                     "White pupil (leukocoria)",
                     "Cloudy cornea",
                     "Nystagmus",
-                    "Not fixing/following by 3 months"
+                    "Not fixing/following by 3 months",
+                    "Asymmetric red reflex"
                 ],
                 questions: [
                     {
-                        id: "age",
+                        id: "age_group",
                         text: "What is the child's age?",
-                        options: ["0-6 months", "6-12 months", "1-3 years", ">3 years"],
-                        clinicalNote: "Age determines urgency"
+                        options: ["0-6 months", "6-12 months", "1-3 years", "3-8 years", ">8 years"],
+                        clinicalNote: "Age determines urgency and referral pathway"
                     },
                     {
-                        id: "reflex",
+                        id: "presenting_problem",
+                        text: "What is the main concern?",
+                        options: ["Squint/misalignment", "Red/sticky eye", "Poor vision", "Abnormal appearance", "Watery eye"],
+                        clinicalNote: "Different conditions have age-specific implications"
+                    },
+                    {
+                        id: "red_reflex",
                         text: "Is red reflex normal?",
-                        options: ["Normal", "Absent/white", "Not checked"],
-                        clinicalNote: "Abnormal reflex requires URGENT referral"
+                        subtitle: "If checked",
+                        options: ["Normal both eyes", "Absent/white", "Asymmetric", "Not checked"],
+                        clinicalNote: "Abnormal red reflex requires URGENT referral"
+                    },
+                    {
+                        id: "onset_timing",
+                        text: "When was problem first noticed?",
+                        options: ["Since birth", "Recent weeks", "Recent months", "Intermittent"],
+                        clinicalNote: "Congenital problems may need earlier intervention"
+                    },
+                    {
+                        id: "development",
+                        text: "Are developmental milestones normal?",
+                        options: ["Yes", "Delayed", "Regression", "Not sure"],
+                        clinicalNote: "Developmental issues may indicate syndromic conditions"
+                    },
+                    {
+                        id: "family_history",
+                        text: "Relevant family history?",
+                        options: ["None", "Squint", "Lazy eye", "Childhood cataracts", "Retinoblastoma"],
+                        clinicalNote: "Family history affects urgency and screening needs"
                     }
                 ],
                 recommendations: {
                     emergency: {
-                        criteria: ["reflex:Absent/white"],
+                        criteria: ["red_reflex:Absent/white"],
                         condition: "Leukocoria - ?retinoblastoma",
                         management: "URGENT pediatric ophthalmology within 2 weeks"
+                    },
+                    urgent: {
+                        criteria: ["age_group:0-6 months", "presenting_problem:Squint/misalignment"],
+                        condition: "Infantile esotropia",
+                        management: "Pediatric ophthalmology within 4-6 weeks"
+                    },
+                    routine: {
+                        criteria: ["presenting_problem:Watery eye", "onset_timing:Since birth"],
+                        condition: "Congenital nasolacrimal duct obstruction",
+                        management: "Conservative management, routine referral if persists >12 months"
                     }
                 }
             },
@@ -1966,27 +2323,58 @@
                 redFlags: [
                     "Pupil involvement (CN III)",
                     "Multiple cranial nerves",
-                    "Progressive symptoms"
+                    "Progressive symptoms",
+                    "Age >50 with acute onset",
+                    "Associated neurological signs"
                 ],
                 questions: [
                     {
                         id: "type",
                         text: "Is diplopia monocular or binocular?",
-                        options: ["Resolves covering one eye", "Persists with one eye", "Variable"],
-                        clinicalNote: "Monocular is usually refractive"
+                        subtitle: "Does it resolve when covering one eye?",
+                        options: ["Resolves with one eye covered (binocular)", "Persists with one eye (monocular)", "Variable", "Unsure"],
+                        clinicalNote: "Monocular diplopia is usually refractive; binocular suggests muscle/nerve pathology"
                     },
                     {
                         id: "onset",
-                        text: "How did it start?",
-                        options: ["Sudden", "Gradual", "Long-standing"],
-                        clinicalNote: "Sudden onset needs urgent assessment"
+                        text: "How did symptoms begin?",
+                        options: ["Sudden onset", "Gradual over days", "Progressive over weeks", "Long-standing"],
+                        clinicalNote: "Sudden onset in older patients needs urgent assessment for stroke"
+                    },
+                    {
+                        id: "pattern",
+                        text: "When is diplopia worst?",
+                        options: ["Constant", "Distance only", "Near only", "Varies through day", "Certain directions"],
+                        clinicalNote: "Variable symptoms suggest myasthenia gravis"
+                    },
+                    {
+                        id: "associated_features",
+                        text: "Associated symptoms?",
+                        options: ["None", "Headache", "Ptosis", "Facial weakness", "Pupil abnormality"],
+                        clinicalNote: "Multiple features suggest serious neurological pathology"
+                    },
+                    {
+                        id: "risk_factors",
+                        text: "Relevant history?",
+                        options: ["None", "Diabetes", "Hypertension", "Recent trauma", "Thyroid disease"],
+                        clinicalNote: "Vascular risk factors common in isolated CN VI palsy"
                     }
                 ],
                 recommendations: {
+                    emergency: {
+                        criteria: ["associated_features:Pupil abnormality", "onset:Sudden onset"],
+                        condition: "Third nerve palsy with pupil involvement",
+                        management: "IMMEDIATE neuroimaging - ?aneurysm"
+                    },
                     urgent: {
-                        criteria: ["type:Resolves covering one eye", "onset:Sudden"],
+                        criteria: ["type:Resolves with one eye covered (binocular)", "onset:Sudden onset"],
                         condition: "Acute cranial nerve palsy",
                         management: "Urgent neuro-ophthalmology assessment"
+                    },
+                    routine: {
+                        criteria: ["type:Persists with one eye (monocular)"],
+                        condition: "Monocular diplopia",
+                        management: "Refraction and routine ophthalmology"
                     }
                 }
             },
@@ -1996,27 +2384,58 @@
                 redFlags: [
                     "Papilledema",
                     "New headache pattern >50 years",
-                    "Worse on waking/valsalva"
+                    "Worse on waking/valsalva",
+                    "Progressive visual loss",
+                    "Neurological signs"
                 ],
                 questions: [
                     {
-                        id: "pattern",
+                        id: "visual_symptoms",
                         text: "What visual symptoms occur?",
-                        options: ["Zigzag lines", "Vision loss", "Double vision"],
-                        clinicalNote: "Pattern helps differentiate causes"
+                        options: ["Zigzag lines/fortification", "Transient vision loss", "Persistent blur", "Double vision", "Visual field defect"],
+                        clinicalNote: "Classic migraine has positive phenomena; concerning if negative symptoms"
                     },
                     {
-                        id: "fundus",
-                        text: "Fundus examination findings?",
-                        options: ["Normal", "Disc swelling", "Not examined"],
-                        clinicalNote: "Papilledema requires urgent investigation"
+                        id: "headache_pattern",
+                        text: "Describe headache pattern",
+                        options: ["Classic migraine", "Worse on waking", "Sudden severe", "Progressive worsening", "With eye movement"],
+                        clinicalNote: "Morning headaches and progression suggest raised ICP"
+                    },
+                    {
+                        id: "fundoscopy",
+                        text: "Fundoscopy findings?",
+                        subtitle: "If examined",
+                        options: ["Normal", "Disc swelling", "Disc pallor", "Not examined"],
+                        clinicalNote: "Papilledema requires URGENT investigation"
+                    },
+                    {
+                        id: "age_symptoms",
+                        text: "Age and symptom duration?",
+                        options: ["<50 years, familiar pattern", ">50 years, new pattern", "Any age, progressive", "Any age, sudden onset"],
+                        clinicalNote: "New headaches after 50 need investigation for GCA/masses"
+                    },
+                    {
+                        id: "associated_features",
+                        text: "Other features present?",
+                        options: ["Nausea only", "Jaw claudication", "Scalp tenderness", "Red painful eye", "None"],
+                        clinicalNote: "GCA features require immediate treatment"
                     }
                 ],
                 recommendations: {
                     emergency: {
-                        criteria: ["fundus:Disc swelling"],
+                        criteria: ["fundoscopy:Disc swelling", "headache_pattern:Worse on waking"],
                         condition: "Papilledema - raised ICP",
                         management: "URGENT medical admission for imaging"
+                    },
+                    urgent: {
+                        criteria: ["associated_features:Jaw claudication", "age_symptoms:>50 years, new pattern"],
+                        condition: "Giant cell arteritis",
+                        management: "Immediate prednisolone 60-80mg, urgent ESR/CRP"
+                    },
+                    routine: {
+                        criteria: ["visual_symptoms:Zigzag lines/fortification", "age_symptoms:<50 years, familiar pattern"],
+                        condition: "Migraine with aura",
+                        management: "GP management, prophylaxis if frequent"
                     }
                 }
             },
@@ -2026,32 +2445,64 @@
                 redFlags: [
                     "Contact lens wearer with pain",
                     "Penetrating injury suspicion",
-                    "Dendritic ulcer pattern"
+                    "Dendritic ulcer pattern",
+                    "Central corneal involvement",
+                    "Hypopyon"
                 ],
                 questions: [
                     {
-                        id: "cause",
-                        text: "What is the likely cause?",
-                        options: ["Trauma", "Contact lens related", "No specific cause"],
-                        clinicalNote: "CL keratitis needs different management"
+                        id: "precipitating_event",
+                        text: "Was there a precipitating event?",
+                        options: ["Trauma/injury", "Foreign body", "Chemical exposure", "No specific event"],
+                        clinicalNote: "Chemical injuries need immediate irrigation before assessment"
                     },
                     {
-                        id: "staining",
+                        id: "contact_lens_user",
+                        text: "Does patient wear contact lenses?",
+                        options: ["Yes - current user", "Yes - but not recently", "No", "Overnight wear"],
+                        clinicalNote: "Contact lens keratitis can progress rapidly and needs different treatment"
+                    },
+                    {
+                        id: "pain_level",
+                        text: "Severity of pain?",
+                        options: ["No pain", "Mild discomfort", "Moderate pain", "Severe pain"],
+                        clinicalNote: "Severe pain with contact lens use suggests microbial keratitis"
+                    },
+                    {
+                        id: "vision_impact",
+                        text: "Is vision affected?",
+                        options: ["No change", "Slight blur", "Significant reduction", "Can't see details"],
+                        clinicalNote: "Vision loss suggests central corneal involvement"
+                    },
+                    {
+                        id: "fluorescein_pattern",
                         text: "Fluorescein staining pattern?",
-                        options: ["No staining", "Punctate", "Dendritic", "Large defect", "Not tested"],
-                        clinicalNote: "Dendritic = HSV, needs antivirals"
+                        subtitle: "If available",
+                        options: ["No uptake", "Linear abrasion", "Punctate staining", "Dendritic pattern", "Large epithelial defect", "Not tested"],
+                        clinicalNote: "Dendritic = HSV keratitis; Geographic = healing/treated HSV"
+                    },
+                    {
+                        id: "associated_features",
+                        text: "Other features present?",
+                        options: ["White infiltrate", "Hypopyon", "Corneal thinning", "None visible"],
+                        clinicalNote: "Infiltrates and hypopyon indicate severe infection"
                     }
                 ],
                 recommendations: {
-                    urgent: {
-                        criteria: ["staining:Dendritic"],
-                        condition: "Herpetic keratitis",
-                        management: "Same-day ophthalmology, start aciclovir"
-                    },
                     emergency: {
-                        criteria: ["cause:Contact lens related", "staining:Large defect"],
+                        criteria: ["contact_lens_user:Yes - current user", "fluorescein_pattern:Large epithelial defect"],
                         condition: "Contact lens keratitis",
-                        management: "Stop CL wear, same-day referral"
+                        management: "Stop CL wear immediately, same-day referral, scrape before antibiotics"
+                    },
+                    urgent: {
+                        criteria: ["fluorescein_pattern:Dendritic pattern"],
+                        condition: "Herpetic keratitis",
+                        management: "Same-day ophthalmology, start aciclovir 3% 5x daily"
+                    },
+                    routine: {
+                        criteria: ["fluorescein_pattern:Linear abrasion", "contact_lens_user:No"],
+                        condition: "Simple corneal abrasion",
+                        management: "Chloramphenicol QDS 5-7 days, review if not healing"
                     }
                 }
             }
@@ -2096,6 +2547,18 @@
             const clinicalNotes = generateClinicalNotes(selectedCondition, recommendation.urgency, responses);
             if (clinicalFindingsTextarea) {
                 clinicalFindingsTextarea.value = clinicalNotes;
+            }
+            
+            // Set safety netting advice
+            const safetyNettingTextarea = document.getElementById('gos18-safety-netting');
+            if (safetyNettingTextarea) {
+                const safetyAdvice = safetyNettingConfig[selectedCondition]?.[recommendation.urgency] || [
+                    "Return immediately if symptoms worsen",
+                    "Seek urgent care if new symptoms develop",
+                    "Attend all follow-up appointments",
+                    "Contact emergency services if concerned"
+                ];
+                safetyNettingTextarea.value = safetyAdvice.join('\n');
             }
             
             // Check appropriate urgency box
@@ -2212,34 +2675,65 @@
 
         // Function to email GOS18 form
         function emailGOS18() {
-            const formData = new FormData(document.getElementById('gos18-form'));
-            let emailBody = 'GOS 18 - Referral/Notification\n\n';
-            emailBody += `Condition: ${selectedCondition}\n`;
-            emailBody += `Urgency: ${recommendation.urgency.toUpperCase()}\n`;
-            emailBody += `Severity Score: ${recommendation.severityScore || 'N/A'}\n\n`;
-            
-            // Add assessment summary
-            emailBody += 'ASSESSMENT SUMMARY:\n';
-            assessmentPath.forEach(step => {
-                emailBody += `${step.question}: ${step.answer}\n`;
-            });
-            emailBody += '\n';
-            
-            // Add form data
-            emailBody += 'REFERRAL DETAILS:\n';
-            for (let [key, value] of formData.entries()) {
-                if (value && value !== '') {
-                    const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-                    emailBody += `${formattedKey}: ${value}\n`;
+            try {
+                const formData = new FormData(document.getElementById('gos18-form'));
+                let emailBody = 'GOS 18 - REFERRAL/NOTIFICATION\n';
+                emailBody += '================================\n\n';
+                
+                // Add key patient details
+                emailBody += 'PATIENT DETAILS:\n';
+                emailBody += `Name: ${formData.get('title') || ''} ${formData.get('firstName') || ''} ${formData.get('surname') || ''}\n`;
+                emailBody += `DOB: ${formData.get('dob') || ''}\n`;
+                emailBody += `Address: ${formData.get('address') || ''}\n`;
+                emailBody += `Postcode: ${formData.get('postcode') || ''}\n\n`;
+                
+                // Add clinical summary
+                emailBody += 'CLINICAL SUMMARY:\n';
+                emailBody += `Condition: ${selectedCondition}\n`;
+                emailBody += `Urgency: ${recommendation.urgency.toUpperCase()}\n`;
+                emailBody += `Severity Score: ${recommendation.severityScore || 'N/A'}\n`;
+                emailBody += `Provisional Diagnosis: ${recommendation.condition}\n\n`;
+                
+                // Add clinical findings
+                emailBody += 'CLINICAL FINDINGS:\n';
+                emailBody += `${formData.get('clinicalFindings') || ''}\n\n`;
+                
+                // Add safety netting advice
+                emailBody += 'SAFETY-NETTING ADVICE GIVEN:\n';
+                emailBody += `${formData.get('safetyNettingAdvice') || ''}\n\n`;
+                
+                // Add referral date
+                emailBody += `Referral Date: ${formData.get('referralDate') || new Date().toISOString().split('T')[0]}\n`;
+                emailBody += `Optometrist: ${formData.get('optSignature') || ''}\n`;
+                emailBody += `GOC Number: ${formData.get('gocNumber') || ''}\n`;
+                
+                // Create mailto link - limit body length to avoid issues
+                const subject = `GOS18 Referral - ${selectedCondition} - ${recommendation.urgency.toUpperCase()} - ${formData.get('surname') || 'Patient'}`;
+                
+                // If email body is too long, create a shorter version
+                if (emailBody.length > 1500) {
+                    emailBody = 'GOS 18 REFERRAL - FULL DETAILS ATTACHED\n\n';
+                    emailBody += `Patient: ${formData.get('firstName') || ''} ${formData.get('surname') || ''}\n`;
+                    emailBody += `DOB: ${formData.get('dob') || ''}\n`;
+                    emailBody += `Condition: ${selectedCondition}\n`;
+                    emailBody += `Urgency: ${recommendation.urgency.toUpperCase()}\n`;
+                    emailBody += `Diagnosis: ${recommendation.condition}\n\n`;
+                    emailBody += 'Please see attached PDF for full clinical details.\n';
+                    emailBody += '(Use the Download PDF button to generate the full referral form)';
                 }
+                
+                const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+                
+                // Open email client
+                window.open(mailtoLink, '_blank');
+                
+                // Alert user about PDF attachment
+                alert('Email client opened. Please remember to attach the GOS18 PDF using the Download PDF button if required.');
+                
+            } catch (error) {
+                console.error('Error generating email:', error);
+                alert('Unable to open email client. Please copy the form data manually.');
             }
-            
-            // Create mailto link
-            const subject = `GOS18 Referral - ${selectedCondition} - ${recommendation.urgency.toUpperCase()}`;
-            const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-            
-            // Open email client
-            window.location.href = mailtoLink;
         }
 
         // Function to display conditions
@@ -2452,7 +2946,7 @@
                 urgency: urgency,
                 condition: matchedRecommendation.condition,
                 management: matchedRecommendation.management,
-                reasoning: `Based on clinical assessment: ${matchedRecommendation.condition}`,
+                reasoning: `Based on clinical assessment: ${matchedRecommendation.condition}. Clinical severity score: ${severityScore}`,
                 severityScore: severityScore
             };
             
