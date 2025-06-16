@@ -2618,59 +2618,174 @@
 
         // Function to download GOS18 as PDF
         async function downloadGOS18() {
+            try {
+                // First, ensure all form data is populated
+                populateGOS18Form();
+                
+                // Get the form container
+                const formContainer = document.getElementById('gos18-form-container');
+                const formElement = document.getElementById('gos18-form');
+                
+                // Temporarily show the form if hidden
+                const wasHidden = formContainer.classList.contains('hidden');
+                if (wasHidden) {
+                    formContainer.classList.remove('hidden');
+                }
+                
+                // Hide the action buttons and close button for clean PDF
+                const closeButton = formContainer.querySelector('.gos18-close');
+                const actionsDiv = formContainer.querySelector('.gos18-actions');
+                closeButton.style.display = 'none';
+                actionsDiv.style.display = 'none';
+                
+                // Use html2canvas to capture the form
+                const canvas = await html2canvas(formElement, {
+                    scale: 2,
+                    logging: false,
+                    useCORS: true,
+                    backgroundColor: '#ffffff'
+                });
+                
+                // Restore hidden elements
+                closeButton.style.display = '';
+                actionsDiv.style.display = '';
+                
+                // Hide form again if it was hidden
+                if (wasHidden) {
+                    formContainer.classList.add('hidden');
+                }
+                
+                // Create PDF from canvas
+                const { jsPDF } = window.jspdf;
+                const imgData = canvas.toDataURL('image/png');
+                
+                // Calculate dimensions
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 297; // A4 height in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                
+                // Create PDF
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                let position = 0;
+                
+                // Add first page
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                // Add additional pages if needed
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                // Save the PDF
+                const filename = `GOS18_${selectedCondition.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+                pdf.save(filename);
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                
+                // Fallback to text-based PDF
+                generateTextBasedPDF();
+            }
+        }
+        
+        // Fallback function for text-based PDF
+        function generateTextBasedPDF() {
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            
-            // Get form data
+            const pdf = new jsPDF('p', 'mm', 'a4');
             const formData = new FormData(document.getElementById('gos18-form'));
             
-            // Add title
+            // Page margins
+            const leftMargin = 15;
+            const rightMargin = 195;
+            const topMargin = 20;
+            let yPos = topMargin;
+            
+            // Title
             pdf.setFontSize(16);
-            pdf.text('GOS 18 - Referral/Notification', 20, 20);
-            
-            // Add assessment summary
-            pdf.setFontSize(12);
-            pdf.text(`Condition: ${selectedCondition}`, 20, 35);
-            pdf.text(`Urgency: ${recommendation.urgency.toUpperCase()}`, 20, 45);
-            pdf.text(`Severity Score: ${recommendation.severityScore || 'N/A'}`, 20, 55);
-            
-            // Add form content
-            let yPosition = 70;
-            const lineHeight = 10;
-            
+            pdf.setFont(undefined, 'bold');
+            pdf.text('GOS 18', leftMargin, yPos);
             pdf.setFontSize(10);
+            pdf.setFont(undefined, 'normal');
+            yPos += 7;
+            pdf.text('Referral/Notification (Always at optometrist)', leftMargin, yPos);
+            yPos += 5;
+            pdf.text('Please contact the patient if they do not contact you or do not attend', leftMargin, yPos);
+            yPos += 10;
             
-            // Iterate through form data
-            for (let [key, value] of formData.entries()) {
-                if (value && value !== '') {
-                    // Format the key nicely
-                    const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-                    
-                    // Handle long text
-                    if (value.length > 60) {
-                        const lines = pdf.splitTextToSize(`${formattedKey}: ${value}`, 170);
-                        lines.forEach(line => {
-                            if (yPosition > 280) {
+            // Draw sections
+            const sections = [
+                { title: 'CONSULTATION DATE / Patient Details', fields: ['title', 'firstName', 'surname', 'dob', 'telHome', 'telMobile', 'address', 'postcode'] },
+                { title: 'GP Details / Optometrist Details', fields: ['gpName', 'gpEmail', 'gpTel', 'optName', 'optEmail', 'optTel'] },
+                { title: 'Clinical Findings', fields: ['clinicalFindings'] },
+                { title: 'Safety-Netting Advice', fields: ['safetyNettingAdvice'] },
+                { title: 'Referral Information', fields: ['referralDate', 'optSignature', 'gocNumber'] }
+            ];
+            
+            sections.forEach(section => {
+                // Section header
+                pdf.setFillColor(229, 231, 235);
+                pdf.rect(leftMargin - 2, yPos - 5, rightMargin - leftMargin + 4, 8, 'F');
+                pdf.setFont(undefined, 'bold');
+                pdf.text(section.title, leftMargin, yPos);
+                pdf.setFont(undefined, 'normal');
+                yPos += 10;
+                
+                // Section fields
+                section.fields.forEach(field => {
+                    const value = formData.get(field) || '';
+                    if (value) {
+                        const label = field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                        
+                        if (field === 'clinicalFindings' || field === 'safetyNettingAdvice' || field === 'address') {
+                            // Handle multi-line text
+                            pdf.setFont(undefined, 'bold');
+                            pdf.text(`${label}:`, leftMargin, yPos);
+                            pdf.setFont(undefined, 'normal');
+                            yPos += 5;
+                            
+                            const lines = pdf.splitTextToSize(value, rightMargin - leftMargin);
+                            lines.forEach(line => {
+                                if (yPos > 270) {
+                                    pdf.addPage();
+                                    yPos = topMargin;
+                                }
+                                pdf.text(line, leftMargin + 5, yPos);
+                                yPos += 5;
+                            });
+                        } else {
+                            // Single line fields
+                            if (yPos > 270) {
                                 pdf.addPage();
-                                yPosition = 20;
+                                yPos = topMargin;
                             }
-                            pdf.text(line, 20, yPosition);
-                            yPosition += lineHeight;
-                        });
-                    } else {
-                        pdf.text(`${formattedKey}: ${value}`, 20, yPosition);
-                        yPosition += lineHeight;
+                            pdf.text(`${label}: ${value}`, leftMargin, yPos);
+                            yPos += 6;
+                        }
                     }
-                    
-                    if (yPosition > 280) {
-                        pdf.addPage();
-                        yPosition = 20;
-                    }
-                }
-            }
+                });
+                yPos += 5;
+            });
+            
+            // Add urgency and subspecialty information
+            pdf.setFont(undefined, 'bold');
+            pdf.text('Referral Urgency:', leftMargin, yPos);
+            pdf.setFont(undefined, 'normal');
+            pdf.text(recommendation.urgency.toUpperCase(), leftMargin + 30, yPos);
+            yPos += 6;
+            
+            pdf.setFont(undefined, 'bold');
+            pdf.text('Condition:', leftMargin, yPos);
+            pdf.setFont(undefined, 'normal');
+            pdf.text(selectedCondition, leftMargin + 20, yPos);
             
             // Save the PDF
-            pdf.save(`GOS18_${selectedCondition.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`);
+            const filename = `GOS18_${selectedCondition.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+            pdf.save(filename);
         }
 
         // Function to email GOS18 form
